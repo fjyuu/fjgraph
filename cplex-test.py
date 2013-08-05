@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 #encoding: utf8
 import cplex
+import sys
 
 # 以下の最適化問題を解く：
 # Maximize
@@ -13,28 +14,27 @@ import cplex
 # End
 
 try:
+    # Cplexオブジェクトを用意
     solver = cplex.Cplex()
 
-    # 最小化問題
+    # 最大化問題
     solver.objective.set_sense(solver.objective.sense.maximize)
 
-    # 最小化したい式と変数の定義域
+    # 最大化したい式と変数の定義域
     # 変数の下界はデフォルトで0.0になるので，ここでは省略している
     solver.variables.add(
-        obj   = [1.0, 2.0, 3.0], # 係数リスト
-        ub    = [40.0, cplex.infinity, cplex.infinity], # 変数の上界リスト
-        names = ["x1", "x2", "x3"] # 変数名リスト
-        # types = "BBB" # Binary IP
+        # 係数リスト
+        obj   = [1.0, 2.0, 3.0],
+
+        # 変数の上界リスト（ubはupper boundの略．下界はlbでlower boundの略．）
+        ub    = [40.0, cplex.infinity, cplex.infinity],
+
+        # 変数名リスト
+        names = ["x1", "x2", "x3"]
+
+        # Binary IPを指定
+        # types = "BBB"
     )
-
-    # can query variables like the following:
-
-    # lbs is a list of all the lower bounds
-    lbs = solver.variables.get_lower_bounds()
-    # ub1 is just the first lower bound
-    ub1 = solver.variables.get_upper_bounds(0)
-    # names is ["x1", "x3"]
-    names = solver.variables.get_names([0, 2])
 
     coefficients = [
         [["x1", "x2", "x3"], [-1.0, 1.0, 1.0]],
@@ -43,19 +43,29 @@ try:
 
     # 線形制約
     solver.linear_constraints.add(
-        lin_expr = coefficients, # 線形式の係数リスト
-        senses   = "LL", # 不等号の向き(L or G?)
-        rhs      = [20.0, 30.0], # 右辺の値
-        names    = ["c1", "c2"] # 名前
+        # 線形式の係数リスト
+        lin_expr = coefficients,
+
+        # 不等号の向き(L or G?)（LはLess thanの略．GはGreater thanの略．）
+        senses   = "LL",
+
+        # 右辺の値（rhsはright-hand side）
+        rhs      = [20.0, 30.0],
+
+        # 式の名前
+        names    = ["c1", "c2"]
     )
 
-    # because there are two arguments, they are taken to specify a range
-    # thus, cols is the entire constraint matrix as a list of column vectors
-    cols = solver.variables.get_cols("x1", "x3")
+    # 問題をファイルに出力
+    solver.write("cplex-test.lp")
 
+    # 解く
     solver.solve()
 except CplexError, exc:
-    print exc
+    sys.stderr.write(exc)
+    sys.exit(1)
+
+# 結果を出力
 
 num_constraints = solver.linear_constraints.get_num()
 num_variables = solver.variables.get_num()
@@ -74,5 +84,3 @@ for i in range(num_constraints):
     print "Constraint %d:  Slack = %10f  Pi = %10f" % (i, slack[i], pi[i])
 for j in range(num_variables):
     print "Variable %d:  Value = %10f Reduced cost = %10f" % (j, x[j], dj[j])
-
-solver.write("cplex-test.lp")
