@@ -16,7 +16,7 @@ def ok_check_values(check_values):
 def pattern_of_vertex_cover(G):
     node_size = G.number_of_nodes()
     edge_size = G.number_of_edges()
-    constraint_graph = fjgraph.ConstrantGraph(G)
+    constraint_graph = fjgraph.ConstraintGraph(G)
     ret_dist = {}
 
     for variable_values in itertools.product([0, 1], repeat = node_size):
@@ -53,7 +53,7 @@ def ave_pattern_of_vertex_cover(degree_dist, loop_count):
 def pattern_of_LP_vertex_cover(G):
     node_size = G.number_of_nodes()
     edge_size = G.number_of_edges()
-    constraint_graph = fjgraph.ConstrantGraph(G)
+    constraint_graph = fjgraph.ConstraintGraph(G)
     ret_table = [[0 for j in range(node_size + 1)] for i in range(node_size + 1)]
 
     for variable_values in itertools.product([0, 0.5, 1], repeat = node_size):

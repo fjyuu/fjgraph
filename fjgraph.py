@@ -4,7 +4,7 @@
 import networkx
 import random
 
-class ConstrantGraph(object):
+class ConstraintGraph(object):
     def __init__(self, G):
         self.original_graph = G
 
@@ -52,19 +52,3 @@ def specified_degree_graph(degree_dist):
         G.add_edge(a, b, weight = 1)
 
     return G
-
-if __name__ == '__main__':
-    G = networkx.MultiGraph()
-    G.add_edge(0,1, capacity = 1)
-    G.add_edge(0,1, capacity = 1)
-    G.add_edge(1,4, capacity = 1)
-    G.add_edge(1,4, capacity = 1)
-    G.add_edge(4,3, capacity = 1)
-    G.add_edge(3,2, capacity = 1)
-    G.add_edge(2,0, capacity = 1)
-    G.add_edge(1,3, capacity = 1)
-    G.add_edge(1,2, capacity = 1)
-    G.add_edge(1,1, capacity = 1)
-
-    constraint_graph = ConstrantGraph(G)
-    print(constraint_graph.calc_check_values([0, 1, 1]))
