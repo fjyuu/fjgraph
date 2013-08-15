@@ -11,3 +11,15 @@
 ## テスト ##
 
     $ python -m unittest discover -v -f
+
+## 実験スクリプト ##
+
+### pattern.py ###
+
+#### 概要 ####
+
+アンサンブルにおける平均頂点被覆分布の実験値を求める
+
+#### 実行例 ####
+
+    $ ./pattern.py ensemble.json

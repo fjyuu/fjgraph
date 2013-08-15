@@ -1,0 +1,4 @@
+{
+    "type": "specified_degree_graph",
+    "degree_dist": [0, 1, 2, 3, 4]
+}

@@ -6,6 +6,9 @@ import fjgraph
 import fjutil
 import networkx
 import itertools
+import optparse
+import os
+import json
 from pprint import pprint
 
 def ok_check_values(check_values):
@@ -86,9 +89,28 @@ def ave_pattern_of_LP_vertex_cover(degree_dist, loop_count):
     return ave_table
 
 if __name__ == '__main__':
-    degree_dist = [0, 1, 2, 3, 4]
-    loop_count = 1000
+    # 引数処理
+    parser = optparse.OptionParser("usage: %prog [options] ensemble.json")
+    parser.add_option("-t", "--trials",
+                      dest    = "trials",
+                      type    = "int",
+                      default = 1000,
+                      help    = "set the number of trials",
+                      metavar = "NUMBER")
+    (opts, args) = parser.parse_args()
+    if len(args) != 1:
+        parser.error("required a json file which define the ensemble")
+    if not os.access(args[0], os.R_OK):
+        parser.error("cannot read {}".format(args[0]))
 
+    # アンサンブル定義JSON読み込み
+    jsonf = open(args[0], "r")
+    ensemble = json.load(jsonf)
+    jsonf.close()
+
+    # 実験パラメータ
+    degree_dist = ensemble["degree_dist"]
+    loop_count = opts.trials
     print("number of nodes: {0}".format(sum(degree_dist)))
     print("degree dist: {}".format(degree_dist))
     print("number of edges: {0}".format(
