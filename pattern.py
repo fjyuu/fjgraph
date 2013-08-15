@@ -6,6 +6,7 @@ import fjgraph
 import fjutil
 import networkx
 import itertools
+from pprint import pprint
 
 def ok_check_values(check_values):
     for value in check_values:
@@ -96,11 +97,16 @@ if __name__ == '__main__':
     print("loop count: {0}".format(loop_count))
 
     # IP
+    print()
     ave_dist = ave_pattern_of_vertex_cover(degree_dist, loop_count)
-    print("ave_pattern_of_vertex_cover: {0}".format(ave_dist))
+    print("ave_pattern_of_vertex_cover:")
+    pprint(ave_dist)
 
     # LP
+    print()
     ave_table = ave_pattern_of_LP_vertex_cover(degree_dist, loop_count)
     print("ave_pattern_of_LP_vertex_cover:")
     for row in ave_table:
-        print(row)
+        for value in row:
+            print("{:<10.3f}".format(value), end="")
+        print()
