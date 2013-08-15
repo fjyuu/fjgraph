@@ -89,6 +89,7 @@ if __name__ == '__main__':
     loop_count = 1000
 
     print("number of nodes: {0}".format(sum(degree_dist)))
+    print("degree dist: {}".format(degree_dist))
     print("number of edges: {0}".format(
         int(sum([i * dist for i, dist in enumerate(degree_dist)]) / 2)
     ))
