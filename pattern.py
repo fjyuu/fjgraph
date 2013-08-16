@@ -9,6 +9,7 @@ import itertools
 import optparse
 import os
 import json
+import random
 from collections import Counter
 
 def ok_check_values(check_values):
@@ -87,6 +88,12 @@ if __name__ == '__main__':
                       default = 1000,
                       help    = "set the number of trials",
                       metavar = "NUMBER")
+    parser.add_option("-s", "--seed",
+                      dest    = "seed",
+                      type    = "string",
+                      default = None,
+                      help    = "set the seed for the random module",
+                      metavar = "STRING")
     (opts, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("required a json file which define the ensemble")
@@ -99,9 +106,11 @@ if __name__ == '__main__':
     jsonf.close()
 
     # 実験パラメータ
+    random.seed(opts.seed)
     ensemble = fjgraph.GraphEnsembleFactory().create(**ensemble_def)
     loop_count = opts.trials
     print("ensemble: {}".format(ensemble))
+    print("seed: {}".format(opts.seed))
     print("number of nodes: {}".format(ensemble.number_of_nodes()))
     print("number of edges: {}".format(ensemble.number_of_edges()))
     print("number of trials: {}".format(loop_count))
