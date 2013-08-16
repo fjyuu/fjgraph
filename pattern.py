@@ -39,8 +39,8 @@ def ave_pattern_of_vertex_cover(degree_dist, loop_count):
     for i in range(loop_count):
         G = fjgraph.specified_degree_graph(degree_dist)
         ret_dist = pattern_of_vertex_cover(G)
-        progress_bar.write(i / loop_count)
         sum_dist += ret_dist
+        progress_bar.write(i / loop_count)
     progress_bar.end()
 
     ave_dist = Counter(dict((key, value / loop_count)
@@ -71,8 +71,8 @@ def ave_pattern_of_LP_vertex_cover(degree_dist, loop_count):
     for i in range(loop_count):
         G = fjgraph.specified_degree_graph(degree_dist)
         ret_table = pattern_of_LP_vertex_cover(G)
-        progress_bar.write(i / loop_count)
         sum_table += ret_table
+        progress_bar.write(i / loop_count)
     progress_bar.end()
 
     ave_table = Counter(dict((key, value / loop_count)
