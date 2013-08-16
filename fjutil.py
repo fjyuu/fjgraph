@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding: utf-8
+from __future__ import print_function
 import sys
 
 class ProgressBar(object):
@@ -26,3 +27,7 @@ class ProgressBar(object):
     def end(self):
         self.write(1.0)
         sys.stdout.write('\n')
+
+def printCounter(counter, format = "{} {}"):
+    for item in sorted(counter.keys()):
+        print(format.format(item, counter[item]))
