@@ -79,8 +79,8 @@ def ave_pattern_of_LP_vertex_cover(ensemble, loop_count):
                              for key, value in sum_table.items()))
     return ave_table
 
-if __name__ == '__main__':
-    # 引数処理
+def parse_arguments():
+    import optparse
     parser = optparse.OptionParser("usage: %prog [options] ensemble.json")
     parser.add_option("-t", "--trials",
                       dest    = "trials",
@@ -99,14 +99,15 @@ if __name__ == '__main__':
         parser.error("required a json file which define the ensemble")
     if not os.access(args[0], os.R_OK):
         parser.error("cannot read {}".format(args[0]))
+    return (opts, args[0])
 
-    # アンサンブル定義JSON読み込み
-    jsonf = open(args[0], "r")
-    ensemble_def = json.load(jsonf)
-    jsonf.close()
+if __name__ == '__main__':
+    # 引数処理
+    (opts, json_file) = parse_arguments()
 
     # 実験パラメータ
     random.seed(opts.seed)
+    ensemble_def = fjutil.load_json_file(json_file)
     ensemble = fjgraph.GraphEnsembleFactory().create(**ensemble_def)
     loop_count = opts.trials
     print("ensemble: {}".format(ensemble))

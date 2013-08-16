@@ -31,3 +31,10 @@ class ProgressBar(object):
 def printCounter(counter, format = "{} {}"):
     for item in sorted(counter.keys()):
         print(format.format(item, counter[item]))
+
+def load_json_file(file):
+    import json
+    f = open(file, "r")
+    ret = json.load(f)
+    f.close()
+    return ret
