@@ -120,10 +120,10 @@ if __name__ == '__main__':
     print()
     ave_dist = ave_pattern_of_vertex_cover(ensemble, loop_count)
     print("ave_pattern_of_vertex_cover:")
-    fjutil.printCounter(ave_dist, format = "{:>5}: {}")
+    fjutil.print_counter(ave_dist, format = "{:>5}: {}")
 
     # LP
     print()
     ave_table = ave_pattern_of_LP_vertex_cover(ensemble, loop_count)
     print("ave_pattern_of_LP_vertex_cover:")
-    fjutil.printCounter(ave_table, format = "{:>10}: {}")
+    fjutil.print_counter(ave_table, format = "{:>10}: {}")

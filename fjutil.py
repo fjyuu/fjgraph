@@ -28,7 +28,7 @@ class ProgressBar(object):
         self.write(1.0)
         sys.stdout.write('\n')
 
-def printCounter(counter, format = "{} {}"):
+def print_counter(counter, format = "{} {}"):
     for item in sorted(counter.keys()):
         print(format.format(item, counter[item]))
 
