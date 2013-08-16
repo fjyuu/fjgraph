@@ -5,8 +5,9 @@ import networkx
 import random
 
 class ConstraintGraph(object):
-    def __init__(self, G):
+    def __init__(self, G, check_function = lambda u, v: u + v):
         self.original_graph = G
+        self.check_function = check_function
 
     def calc_check_values(self, variable_values):
         G = self.original_graph
@@ -15,7 +16,7 @@ class ConstraintGraph(object):
 
         check_values = []
         for u, v in G.edges():
-            value = variable_values[u] + variable_values[v]
+            value = self.check_function(variable_values[u], variable_values[v])
             check_values.append(value)
 
         return check_values
