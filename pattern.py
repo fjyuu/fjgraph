@@ -2,13 +2,8 @@
 #coding: utf-8
 
 from __future__ import division, print_function, unicode_literals
-import fjgraph
-import fjutil
-import networkx
+import fjgraph, fjutil
 import itertools
-import optparse
-import os
-import json
 import random
 from collections import Counter
 
@@ -80,7 +75,7 @@ def ave_pattern_of_LP_vertex_cover(ensemble, loop_count):
     return ave_table
 
 def parse_arguments():
-    import optparse
+    import optparse, os
     parser = optparse.OptionParser("usage: %prog [options] ensemble.json")
     parser.add_option("-t", "--trials",
                       dest    = "trials",
