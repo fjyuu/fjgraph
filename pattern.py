@@ -9,7 +9,6 @@ import itertools
 import optparse
 import os
 import json
-from pprint import pprint
 from collections import Counter
 
 def ok_check_values(check_values):
