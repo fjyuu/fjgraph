@@ -1,4 +1,6 @@
 {
-    "type": "specified_degree_graph",
-    "degree_dist": [0, 1, 2, 3, 4]
+    "type": "SpecifiedDegreeDistEnsemble",
+    "params": {
+        "degree_dist": [0, 1, 2, 3, 4]
+    }
 }

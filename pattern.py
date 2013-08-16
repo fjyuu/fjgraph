@@ -31,13 +31,13 @@ def pattern_of_vertex_cover(G):
 
     return ret_dist
 
-def ave_pattern_of_vertex_cover(degree_dist, loop_count):
+def ave_pattern_of_vertex_cover(ensemble, loop_count):
     sum_dist = Counter()
     progress_bar = fjutil.ProgressBar("Calculation", 80)
 
     progress_bar.begin()
     for i in range(loop_count):
-        G = fjgraph.specified_degree_graph(degree_dist)
+        G = ensemble.generate_graph()
         ret_dist = pattern_of_vertex_cover(G)
         sum_dist += ret_dist
         progress_bar.write(i / loop_count)
@@ -62,14 +62,13 @@ def pattern_of_LP_vertex_cover(G):
 
     return ret_table
 
-def ave_pattern_of_LP_vertex_cover(degree_dist, loop_count):
-    node_size = sum(degree_dist)
+def ave_pattern_of_LP_vertex_cover(ensemble, loop_count):
     sum_table = Counter()
     progress_bar = fjutil.ProgressBar("Calculation", 80)
 
     progress_bar.begin()
     for i in range(loop_count):
-        G = fjgraph.specified_degree_graph(degree_dist)
+        G = ensemble.generate_graph()
         ret_table = pattern_of_LP_vertex_cover(G)
         sum_table += ret_table
         progress_bar.write(i / loop_count)
@@ -96,27 +95,25 @@ if __name__ == '__main__':
 
     # アンサンブル定義JSON読み込み
     jsonf = open(args[0], "r")
-    ensemble = json.load(jsonf)
+    ensemble_def = json.load(jsonf)
     jsonf.close()
 
     # 実験パラメータ
-    degree_dist = ensemble["degree_dist"]
+    ensemble = fjgraph.GraphEnsembleFactory().create(**ensemble_def)
     loop_count = opts.trials
-    print("number of nodes: {0}".format(sum(degree_dist)))
-    print("degree dist: {}".format(degree_dist))
-    print("number of edges: {0}".format(
-        int(sum([i * dist for i, dist in enumerate(degree_dist)]) / 2)
-    ))
-    print("loop count: {0}".format(loop_count))
+    print("ensemble: {}".format(ensemble))
+    print("number of nodes: {}".format(ensemble.number_of_nodes()))
+    print("number of edges: {}".format(ensemble.number_of_edges()))
+    print("number of trials: {}".format(loop_count))
 
     # IP
     print()
-    ave_dist = ave_pattern_of_vertex_cover(degree_dist, loop_count)
+    ave_dist = ave_pattern_of_vertex_cover(ensemble, loop_count)
     print("ave_pattern_of_vertex_cover:")
     fjutil.printCounter(ave_dist, format = "{:>5}: {}")
 
     # LP
     print()
-    ave_table = ave_pattern_of_LP_vertex_cover(degree_dist, loop_count)
+    ave_table = ave_pattern_of_LP_vertex_cover(ensemble, loop_count)
     print("ave_pattern_of_LP_vertex_cover:")
     fjutil.printCounter(ave_table, format = "{:>10}: {}")
