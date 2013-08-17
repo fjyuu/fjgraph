@@ -2,10 +2,12 @@
 #coding: utf-8
 
 from __future__ import division, print_function, unicode_literals
-import fjgraph, fjutil
+import fjgraph
+import fjutil
 import itertools
 import random
 from collections import Counter
+
 
 def ok_check_values(check_values):
     for value in check_values:
@@ -13,19 +15,20 @@ def ok_check_values(check_values):
             return False
     return True
 
+
 def pattern_of_vertex_cover(G):
     node_size = G.number_of_nodes()
-    edge_size = G.number_of_edges()
     constraint_graph = fjgraph.ConstraintGraph(G)
     ret_dist = Counter()
 
-    for variable_values in itertools.product([0, 1], repeat = node_size):
+    for variable_values in itertools.product([0, 1], repeat=node_size):
         weight = sum(variable_values)
         check_values = constraint_graph.calc_check_values(variable_values)
         if ok_check_values(check_values):
             ret_dist[weight] += 1
 
     return ret_dist
+
 
 def ave_pattern_of_vertex_cover(ensemble, loop_count):
     sum_dist = Counter()
@@ -43,13 +46,13 @@ def ave_pattern_of_vertex_cover(ensemble, loop_count):
                             for key, value in sum_dist.items()))
     return ave_dist
 
+
 def pattern_of_LP_vertex_cover(G):
     node_size = G.number_of_nodes()
-    edge_size = G.number_of_edges()
     constraint_graph = fjgraph.ConstraintGraph(G)
     ret_table = Counter()
 
-    for variable_values in itertools.product([0, 0.5, 1], repeat = node_size):
+    for variable_values in itertools.product([0, 0.5, 1], repeat=node_size):
         number_of_one_half = variable_values.count(0.5)
         number_of_one = variable_values.count(1)
         check_values = constraint_graph.calc_check_values(variable_values)
@@ -57,6 +60,7 @@ def pattern_of_LP_vertex_cover(G):
             ret_table[(number_of_one_half, number_of_one)] += 1
 
     return ret_table
+
 
 def ave_pattern_of_LP_vertex_cover(ensemble, loop_count):
     sum_table = Counter()
@@ -74,21 +78,23 @@ def ave_pattern_of_LP_vertex_cover(ensemble, loop_count):
                              for key, value in sum_table.items()))
     return ave_table
 
+
 def parse_arguments():
-    import optparse, os
+    import optparse
+    import os
     parser = optparse.OptionParser("usage: %prog [options] ensemble.json")
     parser.add_option("-t", "--trials",
-                      dest    = "trials",
-                      type    = "int",
-                      default = 1000,
-                      help    = "set the number of trials",
-                      metavar = "NUMBER")
+                      dest="trials",
+                      type="int",
+                      default=1000,
+                      help="set the number of trials",
+                      metavar="NUMBER")
     parser.add_option("-s", "--seed",
-                      dest    = "seed",
-                      type    = "string",
-                      default = None,
-                      help    = "set the seed for the random module",
-                      metavar = "STRING")
+                      dest="seed",
+                      type="string",
+                      default=None,
+                      help="set the seed for the random module",
+                      metavar="STRING")
     (opts, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("required a json file which define the ensemble")
@@ -115,10 +121,10 @@ if __name__ == '__main__':
     print()
     ave_dist = ave_pattern_of_vertex_cover(ensemble, loop_count)
     print("ave_pattern_of_vertex_cover:")
-    fjutil.print_counter(ave_dist, format = "{:>5}: {}")
+    fjutil.print_counter(ave_dist, format="{:>5}: {}")
 
     # LP
     print()
     ave_table = ave_pattern_of_LP_vertex_cover(ensemble, loop_count)
     print("ave_pattern_of_LP_vertex_cover:")
-    fjutil.print_counter(ave_table, format = "{:>10}: {}")
+    fjutil.print_counter(ave_table, format="{:>10}: {}")

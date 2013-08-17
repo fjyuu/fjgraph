@@ -4,12 +4,14 @@
 import networkx
 import random
 
+
 class GraphEnsembleFactory(object):
     def create(self, type, params):
         if type == "SpecifiedDegreeDistEnsemble":
             return SpecifiedDegreeDistEnsemble(**params)
         else:
             raise FJGraphError("アンサンブルタイプが存在しない")
+
 
 class GraphEnsemble(object):
     def number_of_nodes(self):
@@ -20,6 +22,7 @@ class GraphEnsemble(object):
 
     def generate_graph(self):
         return None
+
 
 class SpecifiedDegreeDistEnsemble(GraphEnsemble):
     def __init__(self, degree_dist):
@@ -36,7 +39,6 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
 
     def generate_graph(self):
         node_size = self.number_of_nodes()
-        edge_size = self.number_of_edges()
 
         shuffled_nodes = list(range(node_size))
         random.shuffle(shuffled_nodes)
@@ -53,7 +55,7 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
         while edge_num_table:
             a = edge_num_table.pop()
             b = edge_num_table.pop()
-            G.add_edge(a, b, weight = 1)
+            G.add_edge(a, b, weight=1)
 
         return G
 
@@ -61,8 +63,9 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
         return "{}(degree_dist={})".format(
             self.__class__.__name__, self.degree_dist)
 
+
 class ConstraintGraph(object):
-    def __init__(self, G, check_function = lambda u, v: u + v):
+    def __init__(self, G, check_function=lambda u, v: u + v):
         self.original_graph = G
         self.check_function = check_function
 
@@ -78,8 +81,10 @@ class ConstraintGraph(object):
 
         return check_values
 
+
 class FJGraphError(Exception):
     pass
+
 
 class DegreeDistError(FJGraphError):
     pass

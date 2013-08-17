@@ -24,13 +24,13 @@ try:
     # 変数の下界はデフォルトで0.0になるので，ここでは省略している
     solver.variables.add(
         # 係数リスト
-        obj   = [1.0, 2.0, 3.0],
+        obj=[1.0, 2.0, 3.0],
 
         # 変数の上界リスト（ubはupper boundの略．下界はlbでlower boundの略．）
-        ub    = [40.0, cplex.infinity, cplex.infinity],
+        ub=[40.0, cplex.infinity, cplex.infinity],
 
         # 変数名リスト
-        names = ["x1", "x2", "x3"]
+        names=["x1", "x2", "x3"]
 
         # Binary IPを指定
         # types = "BBB"
@@ -44,16 +44,16 @@ try:
     # 線形制約
     solver.linear_constraints.add(
         # 線形式の係数リスト
-        lin_expr = coefficients,
+        lin_expr=coefficients,
 
         # 不等号の向き(L or G?)（LはLess thanの略．GはGreater thanの略．）
-        senses   = "LL",
+        senses="LL",
 
         # 右辺の値（rhsはright-hand side）
-        rhs      = [20.0, 30.0],
+        rhs=[20.0, 30.0],
 
         # 式の名前
-        names    = ["c1", "c2"]
+        names=["c1", "c2"]
     )
 
     # 問題をファイルに出力
@@ -77,9 +77,9 @@ print "Solution status = " , solver.solution.get_status(), ":",
 print solver.solution.status[solver.solution.get_status()]
 print "Solution value  = ", solver.solution.get_objective_value()
 slack = solver.solution.get_linear_slacks()
-pi    = solver.solution.get_dual_values()
-x     = solver.solution.get_values()
-dj    = solver.solution.get_reduced_costs()
+pi = solver.solution.get_dual_values()
+x = solver.solution.get_values()
+dj = solver.solution.get_reduced_costs()
 for i in range(num_constraints):
     print "Constraint %d:  Slack = %10f  Pi = %10f" % (i, slack[i], pi[i])
 for j in range(num_variables):
