@@ -5,6 +5,110 @@ import networkx
 import random
 
 
+class VertexCoverSolver(object):
+
+    def __init__(self,
+                 results_stream  = None,
+                 log_stream      = None,
+                 error_stream    = None,
+                 warning_stream  = None):
+        self._results_stream = results_stream
+        self._log_stream = log_stream
+        self._error_stream = error_stream
+        self._warning_stream = warning_stream
+
+    def lp_solve(self, G):
+        values = self._solve_with_cplex(G, easing=True)
+        return VertexCoverSolver.LPSolution(G.nodes(), values)
+
+    def ip_solve(self, G):
+        values = self._solve_with_cplex(G, easing=False)
+        return VertexCoverSolver.IPSolution(G.nodes(), values)
+
+    def _create_cplex_solver(self):
+        import cplex
+        solver = cplex.Cplex()
+        solver.set_results_stream(self._results_stream)
+        solver.set_log_stream(self._log_stream)
+        solver.set_warning_stream(self._warning_stream)
+        solver.set_error_stream(self._error_stream)
+        return solver
+
+    def _solve_with_cplex(self, G, easing=False):
+        solver = self._create_cplex_solver()
+
+        # 最小化問題
+        solver.objective.set_sense(solver.objective.sense.minimize)
+
+        # 最小化したい式と変数の定義域
+        # 変数の下界はデフォルトで0.0になるので，ここでは省略している
+        if easing:
+            variable_type = solver.variables.type.continuous
+        else:
+            variable_type = solver.variables.type.binary
+        solver.variables.add(
+            # 係数リスト
+            obj=[1.0 for i in range(G.number_of_nodes())],
+            # 変数の上界リスト
+            ub=[1.0 for i in range(G.number_of_nodes())],
+            # 変数名リスト
+            names=[str(n) for n in G.nodes()],
+            # Binary IPを指定
+            types=variable_type * G.number_of_nodes()
+        )
+
+        coefficients = []
+        for i, edge in enumerate(G.edges()):
+            if edge[0] == edge[1]: # self-loop
+                coefficients.append([[str(edge[0])], [2.0]])
+            else:
+                coefficients.append([[str(edge[0]), str(edge[1])], [1.0, 1.0]])
+
+        # 線形制約 x_i + x_j >= 1 for (x_i, x_j) in edges
+        solver.linear_constraints.add(
+            # 線形式の係数リスト
+            lin_expr=coefficients,
+            # 不等号の向き
+            senses="G" * G.number_of_edges(),
+            # 右辺の値
+            rhs=[1.0 for i in range(G.number_of_edges())],
+            # 式の名前
+            names=["constraint{}".format(i) for i in range(G.number_of_edges())]
+        )
+
+        solver.solve()
+        return solver.solution.get_values()
+
+    class Solution(object):
+
+        def __init__(self, nodes, values):
+            self._nodes = tuple(nodes)
+            self._values = tuple(values)
+
+        def nodes(self):
+            return tuple(self._nodes)
+
+        def values(self):
+            return tuple(self._values)
+
+        def opt_value(self):
+            return sum(self._values)
+
+        def values_dict(self):
+            nodes = self.nodes()
+            values = self.values()
+            return dict([[nodes[i], values[i]] for i in range(len(nodes))])
+
+        def __str__(self):
+            return "{}".format(self.values_dict())
+
+    class LPSolution(Solution):
+        pass
+
+    class IPSolution(Solution):
+        pass
+
+
 class GraphEnsembleFactory(object):
     def create(self, type, params):
         if type == "SpecifiedDegreeDistEnsemble":
