@@ -46,7 +46,8 @@ try:
         # 線形式の係数リスト
         lin_expr=coefficients,
 
-        # 不等号の向き(L or G?)（LはLess thanの略．GはGreater thanの略．）
+        # 不等号の向き（G:>=, L:<=, E:==, R:ranged）
+        # 参考: http://byn.vc/ptsr6
         senses="LL",
 
         # 右辺の値（rhsはright-hand side）
