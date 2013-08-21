@@ -7,11 +7,8 @@ import random
 
 class VertexCoverSolver(object):
 
-    def __init__(self,
-                 results_stream  = None,
-                 log_stream      = None,
-                 error_stream    = None,
-                 warning_stream  = None):
+    def __init__(self, results_stream=None, log_stream=None,
+                 error_stream=None, warning_stream=None):
         self._results_stream = results_stream
         self._log_stream = log_stream
         self._error_stream = error_stream
@@ -59,7 +56,7 @@ class VertexCoverSolver(object):
 
         coefficients = []
         for i, edge in enumerate(G.edges()):
-            if edge[0] == edge[1]: # self-loop
+            if edge[0] == edge[1]:  # self-loop
                 coefficients.append([[str(edge[0])], [2.0]])
             else:
                 coefficients.append([[str(edge[0]), str(edge[1])], [1.0, 1.0]])
@@ -73,7 +70,7 @@ class VertexCoverSolver(object):
             # 右辺の値
             rhs=[1.0 for i in range(G.number_of_edges())],
             # 式の名前
-            names=["constraint{}".format(i) for i in range(G.number_of_edges())]
+            names=["c{}".format(i) for i in range(G.number_of_edges())]
         )
 
         solver.solve()

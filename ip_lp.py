@@ -71,9 +71,8 @@ def ip_lp_experiment(ensemble, number_of_trials):
     ave_lp_opt_value = sum_lp_opt_value / number_of_trials
     ave_ip_opt_value = sum_ip_opt_value / number_of_trials
     print("ave_number_of_one_half: {:.4} ({:.2%})".format(
-            ave_number_of_one_half, ave_ratio_of_one_half))
-    print("ave_opt_ration: {:.4}".format(
-            ave_opt_ration))
+        ave_number_of_one_half, ave_ratio_of_one_half))
+    print("ave_opt_ration: {:.4}".format(ave_opt_ration))
     print("ave_lp_opt_value: {:.4}".format(ave_lp_opt_value))
     print("ave_ip_opt_value: {:.4}".format(ave_ip_opt_value))
 
