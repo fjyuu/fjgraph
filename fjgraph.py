@@ -161,8 +161,9 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
         return G
 
     def __str__(self):
-        return "{}(degree_dist={})".format(
-            self.__class__.__name__, self.degree_dist)
+        return "{}(degree_dist={}) [n={}, m={}]".format(
+            self.__class__.__name__, self.degree_dist,
+            self.number_of_nodes(), self.number_of_edges())
 
 
 class ConstraintGraph(object):

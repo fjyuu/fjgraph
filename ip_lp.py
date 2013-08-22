@@ -4,8 +4,8 @@
 from __future__ import division, print_function
 import fjgraph
 import fjutil
+import fjexperiment
 import random
-from collections import Counter
 
 
 def parse_arguments():
@@ -32,52 +32,7 @@ def parse_arguments():
     return (opts, args[0])
 
 
-def count_one_half(values):
-    counter = Counter(values)
-    return counter[1/2]
-
-
-def ip_lp_experiment(ensemble, number_of_trials):
-    sum_number_of_one_half = 0
-    sum_lp_opt_value = 0.0
-    sum_ip_opt_value = 0.0
-    sum_opt_ratio = 0.0
-    progress_bar = fjutil.ProgressBar("Calculation", 80)
-    solver = fjgraph.VertexCoverSolver()
-
-    progress_bar.begin()
-    for i in range(number_of_trials):
-        G = ensemble.generate_graph()
-
-        lp_solution = solver.lp_solve(G)
-        number_of_one_half = count_one_half(lp_solution.values())
-        lp_opt_value = lp_solution.opt_value()
-
-        ip_solution = solver.ip_solve(G)
-        ip_opt_value = ip_solution.opt_value()
-
-        sum_number_of_one_half += number_of_one_half
-        sum_opt_ratio += lp_opt_value / ip_opt_value
-        sum_lp_opt_value += lp_opt_value
-        sum_ip_opt_value += ip_opt_value
-        progress_bar.write(i / number_of_trials)
-    progress_bar.end()
-
-    # 結果出力
-    ave_number_of_one_half = sum_number_of_one_half / number_of_trials
-    ave_opt_ration = sum_opt_ratio / number_of_trials
-    ave_ratio_of_one_half = \
-        ave_number_of_one_half / ensemble.number_of_nodes()
-    ave_lp_opt_value = sum_lp_opt_value / number_of_trials
-    ave_ip_opt_value = sum_ip_opt_value / number_of_trials
-    print("ave_number_of_one_half: {:.4} ({:.2%})".format(
-        ave_number_of_one_half, ave_ratio_of_one_half))
-    print("ave_opt_ration: {:.4}".format(ave_opt_ration))
-    print("ave_lp_opt_value: {:.4}".format(ave_lp_opt_value))
-    print("ave_ip_opt_value: {:.4}".format(ave_ip_opt_value))
-
-
-if __name__ == '__main__':
+def lp_ip_ensemble_experiment():
     # 引数処理
     (opts, json_file) = parse_arguments()
 
@@ -85,10 +40,18 @@ if __name__ == '__main__':
     random.seed(opts.seed)
     ensemble_def = fjutil.load_json_file(json_file)
     ensemble = fjgraph.GraphEnsembleFactory().create(**ensemble_def)
-    print("ensemble: {}".format(ensemble))
-    print("seed: {}".format(opts.seed))
-    print("number of nodes: {}".format(ensemble.number_of_nodes()))
-    print("number of edges: {}".format(ensemble.number_of_edges()))
-    print("number of trials: {}".format(opts.trials))
+    if opts.seed != None:
+        print("seed: {}".format(opts.seed))
 
-    ip_lp_experiment(ensemble, opts.trials)
+    # 結果出力
+    r = fjexperiment.ip_lp_ensemble(ensemble, opts.trials)
+    print("= main result =")
+    print("ave_number_of_one_half: {:.4} ({:.2%})".format(
+            r["ave_number_of_one_half"], r["ave_number_of_one_half_ratio"]))
+    print("ave_opt_ration: {:.4}".format(r["ave_opt_ration"]))
+    print("ave_lp_opt_value: {:.4}".format(r["ave_lp_opt_value"]))
+    print("ave_ip_opt_value: {:.4}".format(r["ave_ip_opt_value"]))
+
+
+if __name__ == '__main__':
+    lp_ip_ensemble_experiment()
