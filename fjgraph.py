@@ -3,6 +3,44 @@
 
 import networkx
 import random
+import itertools
+from collections import Counter
+
+
+class VertexCoverDistCalculator(object):
+
+    def _ok_check_values(self, check_values):
+        for value in check_values:
+            if value < 1:
+                return False
+        return True
+
+    def vertex_cover_dist(self, G):
+        n = G.number_of_nodes()
+        constraint_graph = ConstraintGraph(G)
+        ret_dist = Counter()
+
+        for variable_values in itertools.product([0, 1], repeat=n):
+            weight = sum(variable_values)
+            check_values = constraint_graph.calc_check_values(variable_values)
+            if self._ok_check_values(check_values):
+                ret_dist[weight] += 1
+
+        return ret_dist
+
+    def slack_vertex_cover_dist(self, G):
+        n = G.number_of_nodes()
+        constraint_graph = ConstraintGraph(G)
+        ret_table = Counter()
+
+        for variable_values in itertools.product([0, 0.5, 1], repeat=n):
+            number_of_one_half = variable_values.count(0.5)
+            number_of_one = variable_values.count(1)
+            check_values = constraint_graph.calc_check_values(variable_values)
+            if self._ok_check_values(check_values):
+                ret_table[(number_of_one_half, number_of_one)] += 1
+
+        return ret_table
 
 
 class VertexCoverSolver(object):

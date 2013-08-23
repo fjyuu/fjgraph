@@ -22,11 +22,12 @@ class ProgressBar(object):
         sys.stdout.flush()
 
     def begin(self):
+        sys.stdout.write('\n')
         self.write(0.0)
 
     def end(self):
         self.write(1.0)
-        sys.stdout.write('\n')
+        sys.stdout.write('\n\n')
 
 
 def print_counter(counter, format="{} {}"):

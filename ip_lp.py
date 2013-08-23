@@ -37,11 +37,14 @@ def lp_ip_ensemble_experiment():
     (opts, json_file) = parse_arguments()
 
     # 実験パラメータの設定と確認
+    print("= experiment params =")
     random.seed(opts.seed)
     ensemble_def = fjutil.load_json_file(json_file)
     ensemble = fjgraph.GraphEnsembleFactory().create(**ensemble_def)
-    if opts.seed != None:
-        print("seed: {}".format(opts.seed))
+    print("ensemble: {}".format(ensemble))
+    print("num_of_trials: {}".format(opts.trials))
+    print("seed: {}".format(opts.seed))
+    print()
 
     # 結果出力
     r = fjexperiment.ip_lp_ensemble(ensemble, opts.trials)
