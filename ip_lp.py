@@ -54,6 +54,7 @@ def lp_ip_ensemble_experiment():
     print("ave_opt_ration: {:.4}".format(r["ave_opt_ration"]))
     print("ave_lp_opt_value: {:.4}".format(r["ave_lp_opt_value"]))
     print("ave_ip_opt_value: {:.4}".format(r["ave_ip_opt_value"]))
+    print("lp_equal_ip_ratio: {:.4}".format(r["lp_equal_ip_ratio"]))
 
 
 if __name__ == '__main__':
