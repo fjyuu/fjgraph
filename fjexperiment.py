@@ -112,3 +112,60 @@ def ip_lp_ensemble(ensemble, number_of_trials):
             "ave_opt_ration": ave_opt_ration,
             "ave_lp_opt_value": ave_lp_opt_value,
             "ave_ip_opt_value": ave_ip_opt_value}
+
+
+def prob_dist_min_vertex_cover(ensemble, num_of_trials):
+    "最小頂点被覆サイズの確率分布を実験的に求める"
+
+    print("= prob_min_vertex_cover =")
+    print("""input:
+ * ensemble: {}
+ * num_of_trials: {}""".format(ensemble, num_of_trials))
+    print("""output:
+ * prob_dist_min_vertex_cover""")
+
+    min_vertex_dist = _prob_min_vertex_cover(ensemble, num_of_trials, "IP")
+    return dict(
+        (key, value / num_of_trials) for key, value in min_vertex_dist.items()
+    )
+
+
+def prob_dist_slack_min_vertex_cover(ensemble, num_of_trials):
+    "半整数を許したときの最小頂点被覆サイズの確率分布を実験的に求める"
+
+    print("= prob_slack_min_vertex_cover =")
+    print("""input:
+ * ensemble: {}
+ * num_of_trials: {}""".format(ensemble, num_of_trials))
+    print("""output:
+ * prob_dist_slack_min_vertex_cover""")
+
+    min_vertex_dist = _prob_min_vertex_cover(ensemble, num_of_trials, "LP")
+    return dict(
+        (key, value / num_of_trials) for key, value in min_vertex_dist.items()
+    )
+
+
+def _prob_min_vertex_cover(ensemble, num_of_trials, type="IP"):
+    min_vertex_dist = Counter()
+    solver = fjgraph.VertexCoverSolver()
+    progress_bar = fjutil.ProgressBar("Calculation", 80)
+
+    progress_bar.begin()
+    for i in range(num_of_trials):
+        G = ensemble.generate_graph()
+        if type == "IP":
+            solution = solver.ip_solve(G)
+        elif type == "LP":
+            solution = solver.lp_solve(G)
+        else:
+            raise ExperimentError("typeは'IP'もしくは'LP'でなければいけません")
+        opt_value = solution.opt_value()
+        min_vertex_dist[round(opt_value, 1)] += 1 # 小数点第2位以下は誤差
+        progress_bar.write(i / num_of_trials)
+    progress_bar.end()
+
+    return min_vertex_dist
+
+class ExperimentError(Exception):
+    pass
