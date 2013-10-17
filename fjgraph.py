@@ -151,6 +151,8 @@ class GraphEnsembleFactory(object):
     def create(self, type, params):
         if type == "SpecifiedDegreeDistEnsemble":
             return SpecifiedDegreeDistEnsemble(**params)
+        elif type == "MultiGraphEnsemble":
+            return MultiGraphEnsemble(**params)
         else:
             raise FJGraphError("アンサンブルタイプが存在しない")
 
@@ -164,6 +166,36 @@ class GraphEnsemble(object):
 
     def generate_graph(self):
         return None
+
+
+class MultiGraphEnsemble(GraphEnsemble):
+    def __init__(self, num_of_nodes, num_of_edges):
+        self.num_of_nodes = num_of_nodes
+        self.num_of_edges = num_of_edges
+
+    def number_of_nodes(self):
+        return self.num_of_nodes
+
+    def number_of_edges(self):
+        return self.num_of_edges
+
+    def generate_graph(self):
+        n = self.num_of_nodes
+        m = self.num_of_edges
+
+        G = networkx.MultiGraph()
+        G.add_nodes_from(range(n))
+        for edge in range(m):
+            s = random.randint(0, n - 1)
+            t = random.randint(0, n - 1)
+            G.add_edge(s, t)
+
+        return G
+
+    def __str__(self):
+        return "{}(num_of_nodes={}, num_of_edges={})".format(
+            self.__class__.__name__, self.num_of_nodes, self.num_of_edges
+        )
 
 
 class SpecifiedDegreeDistEnsemble(GraphEnsemble):
