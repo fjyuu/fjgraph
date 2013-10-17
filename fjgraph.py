@@ -6,6 +6,10 @@ import itertools
 from collections import Counter
 
 
+def degree_dist(G):
+    return Counter(networkx.degree(G).values())
+
+
 class VertexCoverDistCalculator(object):
 
     def _ok_check_values(self, check_values):
