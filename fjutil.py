@@ -46,3 +46,20 @@ def load_json_file(file):
     ret = json.load(f)
     f.close()
     return ret
+
+
+def frange(start, stop, step):
+    while start < stop:
+        yield start
+        start += step
+
+
+def fillup_dist(dist, start=None, stop=None, step=1, fill=0.0):
+    if start == None:
+        start = min(dist.keys())
+    if stop == None:
+        stop = max(dist.keys())
+    for key in frange(start, stop, step):
+        if key not in dist:
+            dist[key] = fill
+    return dist

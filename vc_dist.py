@@ -62,24 +62,30 @@ def ave_vertex_cover_dist_experiment():
     print()
 
     # 実験
-    ave_dist = fjexperiment.ave_vertex_cover_dist(ensemble, loop_count)
-    ave_table = fjexperiment.ave_slack_vertex_cover_dist(ensemble, loop_count)
-    flatten_ave_table = flatten_ave_slack_vertex_cover_dist(ave_table)
+    ave_ip_dist = fjexperiment.ave_vertex_cover_dist(ensemble, loop_count)
+    ave_lp_table = fjexperiment.ave_slack_vertex_cover_dist(ensemble, loop_count)
+    ave_lp_dist = flatten_ave_slack_vertex_cover_dist(ave_lp_table)
 
+    # 結果出力
     print("= main result =")
-    print("ave_vertex_cover_dist:")
-    fjutil.print_counter(ave_dist, format="{:>5}: {}")
-    print("ave_slack_vertex_cover_dist:")
-    fjutil.print_counter(ave_table, format="{:>10}: {}")
-    print("flatten_ave_slack_vertex_cover_dist:")
-    fjutil.print_counter(flatten_ave_table, format="{:>7.1f}: {}")
+    print("ave_ip_vertex_cover_dist:")
+    fjutil.print_counter(ave_ip_dist, format="{:>5}: {}")
+    print("ave_lp_vertex_cover_dist:")
+    fjutil.print_counter(ave_lp_table, format="{:>10}: {}")
+    print("ave_lp_vertex_cover_dist(flatten):")
+    fjutil.print_counter(ave_lp_dist, format="{:>7.1f}: {}")
 
     # ファイル出力
     if opts.output:
+        n = ensemble.number_of_nodes()
         ip_file = open(opts.output + "-ip.dat", "w")
-        fjutil.output_counter(ave_dist, ip_file)
+        fillup_ip_dist = fjutil.fillup_dist(ave_ip_dist,
+                                            start=0, stop=n, step=1)
+        fjutil.output_counter(fillup_ip_dist, ip_file)
         lp_file = open(opts.output + "-lp.dat", "w")
-        fjutil.output_counter(flatten_ave_table, lp_file)
+        fillup_lp_dist = fjutil.fillup_dist(ave_lp_dist,
+                                            start=0, stop=n, step=0.5)
+        fjutil.output_counter(fillup_lp_dist, lp_file)
 
 
 if __name__ == '__main__':
