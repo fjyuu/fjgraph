@@ -49,7 +49,7 @@ def load_json_file(file):
 
 
 def frange(start, stop, step):
-    while start < stop:
+    while (step > 0 and start < stop) or (step < 0 and stop < start):
         yield start
         start += step
 
