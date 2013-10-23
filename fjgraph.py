@@ -1,5 +1,6 @@
 #coding: utf-8
 
+from __future__ import division, print_function, unicode_literals
 import networkx
 import random
 import itertools
@@ -107,7 +108,7 @@ class VertexCoverSolver(object):
             # 線形式の係数リスト
             lin_expr=coefficients,
             # 不等号の向き
-            senses="G" * G.number_of_edges(),
+            senses=b"G" * G.number_of_edges(),
             # 右辺の値
             rhs=[1.0 for i in range(G.number_of_edges())],
             # 式の名前
