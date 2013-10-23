@@ -31,7 +31,7 @@ class VertexCoverDistCalculator(object):
 
         return ret_dist
 
-    def slack_vertex_cover_dist(self, G):
+    def lp_vertex_cover_dist(self, G):
         n = G.number_of_nodes()
         constraint_graph = ConstraintGraph(G)
         ret_table = Counter()

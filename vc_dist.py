@@ -39,7 +39,7 @@ def parse_arguments():
     return (opts, args[0])
 
 
-def flatten_ave_slack_vertex_cover_dist(dist):
+def flatten_ave_lp_vertex_cover_dist(dist):
     flatten_dist = Counter()
     for s, t in dist:
         flatten_dist[s/2 + t] += dist[s, t]
@@ -63,8 +63,8 @@ def ave_vertex_cover_dist_experiment():
 
     # 実験
     ave_ip_dist = fjexperiment.ave_vertex_cover_dist(ensemble, loop_count)
-    ave_lp_table = fjexperiment.ave_slack_vertex_cover_dist(ensemble, loop_count)
-    ave_lp_dist = flatten_ave_slack_vertex_cover_dist(ave_lp_table)
+    ave_lp_table = fjexperiment.ave_lp_vertex_cover_dist(ensemble, loop_count)
+    ave_lp_dist = flatten_ave_lp_vertex_cover_dist(ave_lp_table)
 
     # 結果出力
     print("= main result =")

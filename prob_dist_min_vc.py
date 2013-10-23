@@ -75,8 +75,8 @@ def prob_dist_min_vertex_cover_experiment():
     # 実験
     prob_dist = fjexperiment.prob_dist_min_vertex_cover(ensemble, num_of_trials)
     ip_c_prob_dist = cumulative_prob_dist(prob_dist, step=1)
-    slack_prob_dist = fjexperiment.prob_dist_slack_min_vertex_cover(ensemble, num_of_trials)
-    lp_c_prob_dist = cumulative_prob_dist(slack_prob_dist, step=0.5)
+    lp_prob_dist = fjexperiment.prob_dist_lp_min_vertex_cover(ensemble, num_of_trials)
+    lp_c_prob_dist = cumulative_prob_dist(lp_prob_dist, step=0.5)
 
     print("= main result =")
 
@@ -89,7 +89,7 @@ def prob_dist_min_vertex_cover_experiment():
 
     if opts.probdist:
         print("半整数を許したときの最小頂点被覆サイズの確率分布:")
-        fjutil.print_counter(slack_prob_dist, format="{:>5}: {}")
+        fjutil.print_counter(lp_prob_dist, format="{:>5}: {}")
     print("半整数を許したときの最小頂点被覆サイズがdelta以上の確率分布:")
     fjutil.print_counter(lp_c_prob_dist, format="{:>5}: {}")
 

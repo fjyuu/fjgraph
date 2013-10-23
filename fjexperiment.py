@@ -31,22 +31,22 @@ output:
     return ave_dist
 
 
-def ave_slack_vertex_cover_dist(ensemble, number_of_trials):
+def ave_lp_vertex_cover_dist(ensemble, number_of_trials):
     sum_table = Counter()
     dist_calc = fjgraph.VertexCoverDistCalculator()
 
-    print("""= ave_slack_vertex_cover_dist =
+    print("""= ave_lp_vertex_cover_dist =
 input:
  * ensemble: {}
  * number_of_trials: {}
 output:
- * ave_slack_vertex_cover_dist""".format(ensemble, number_of_trials))
+ * ave_lp_vertex_cover_dist""".format(ensemble, number_of_trials))
 
     progress_bar = fjutil.ProgressBar("Calculation", 80)
     progress_bar.begin()
     for i in range(number_of_trials):
         G = ensemble.generate_graph()
-        ret_table = dist_calc.slack_vertex_cover_dist(G)
+        ret_table = dist_calc.lp_vertex_cover_dist(G)
         sum_table += ret_table
         progress_bar.write(i / number_of_trials)
     progress_bar.end()
@@ -136,15 +136,15 @@ def prob_dist_min_vertex_cover(ensemble, num_of_trials):
     )
 
 
-def prob_dist_slack_min_vertex_cover(ensemble, num_of_trials):
+def prob_dist_lp_min_vertex_cover(ensemble, num_of_trials):
     "半整数を許したときの最小頂点被覆サイズの確率分布を実験的に求める"
 
-    print("= prob_slack_min_vertex_cover =")
+    print("= prob_lp_min_vertex_cover =")
     print("""input:
  * ensemble: {}
  * num_of_trials: {}""".format(ensemble, num_of_trials))
     print("""output:
- * prob_dist_slack_min_vertex_cover""")
+ * prob_dist_lp_min_vertex_cover""")
 
     min_vertex_dist = _prob_min_vertex_cover(ensemble, num_of_trials, "LP")
     return dict(
