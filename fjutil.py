@@ -34,6 +34,12 @@ def print_counter(counter, format="{} {}"):
         print(format.format(item, counter[item]))
 
 
+def output_counter(counter, file, format="{} {}"):
+    for item in sorted(counter.keys()):
+        file.write(format.format(item, counter[item]))
+        file.write("\n")
+
+
 def load_json_file(file):
     import json
     f = open(file, "r")
