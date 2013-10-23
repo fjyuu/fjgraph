@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #coding: utf-8
 
-from __future__ import division, print_function, unicode_literals
+"ランダムグラフアンサンブルにおける最小頂点被覆問題のIP解とLP解を比較するプログラム"
+
+from __future__ import division, print_function
 import fjgraph
 import fjutil
 import fjexperiment

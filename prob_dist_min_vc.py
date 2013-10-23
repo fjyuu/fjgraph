@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #coding: utf-8
 
-from __future__ import division, print_function, unicode_literals
+"最小頂点被覆サイズがdelta以上になる確率を実験的に求めるプログラム"
+
+from __future__ import division, print_function
 import fjgraph
 import fjutil
 import fjexperiment
@@ -81,16 +83,16 @@ def prob_dist_min_vertex_cover_experiment():
     print("= main result =")
 
     if opts.probdist:
-        print("最小頂点被覆サイズの確率分布:")
+        print(u"最小頂点被覆サイズの確率分布:")
         fjutil.print_counter(prob_dist, format="{:>5}: {}")
-    print("最小頂点被覆サイズがdelta以上の確率分布:")
+    print(u"最小頂点被覆サイズがdelta以上の確率分布:")
     fjutil.print_counter(ip_c_prob_dist, format="{:>5}: {}")
     print()
 
     if opts.probdist:
-        print("半整数を許したときの最小頂点被覆サイズの確率分布:")
+        print(u"半整数を許したときの最小頂点被覆サイズの確率分布:")
         fjutil.print_counter(lp_prob_dist, format="{:>5}: {}")
-    print("半整数を許したときの最小頂点被覆サイズがdelta以上の確率分布:")
+    print(u"半整数を許したときの最小頂点被覆サイズがdelta以上の確率分布:")
     fjutil.print_counter(lp_c_prob_dist, format="{:>5}: {}")
 
     # ファイル出力

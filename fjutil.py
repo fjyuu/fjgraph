@@ -1,10 +1,14 @@
 #coding: utf-8
 
-from __future__ import division, print_function, unicode_literals
+"便利な道具"
+
+from __future__ import division, print_function
 import sys
 
 
 class ProgressBar(object):
+    "プログレスバー"
+
     def __init__(self, label="Progress", bar_length=40, slug="#", space=" "):
         self.label = label
         self.bar_length = bar_length
@@ -31,17 +35,20 @@ class ProgressBar(object):
 
 
 def print_counter(counter, format="{} {}"):
+    "カウンターを標準出力に書き出す"
     for item in sorted(counter.keys()):
         print(format.format(item, counter[item]))
 
 
 def output_counter(counter, file, format="{} {}"):
+    "カウンターをファイルに書き出す"
     for item in sorted(counter.keys()):
         file.write(format.format(item, counter[item]))
         file.write("\n")
 
 
 def load_json_file(file):
+    "jsonファイルを読み込む"
     import json
     f = open(file, "r")
     ret = json.load(f)
@@ -50,12 +57,18 @@ def load_json_file(file):
 
 
 def frange(start, stop, step):
+    "stepが小数でも大丈夫なrange"
     while (step > 0 and start < stop) or (step < 0 and stop < start):
         yield start
         start += step
 
 
 def fillup_dist(dist, start=None, stop=None, step=1, fill=0.0):
+    """分布を表すdistを補完する
+
+    distが，startからstopまでの数をキーとして持っていなかった場合，
+    fillで初期化する．
+    """
     if start == None:
         start = min(dist.keys())
     if stop == None:

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #coding: utf-8
 
-from __future__ import division, print_function, unicode_literals
+"平均頂点被覆分布を実験的に求めるプログラム"
+
+from __future__ import division, print_function
 import fjgraph
 import fjutil
 import fjexperiment

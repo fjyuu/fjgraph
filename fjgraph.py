@@ -1,6 +1,13 @@
 #coding: utf-8
 
-from __future__ import division, print_function, unicode_literals
+"""研究用グラフライブラリ
+
+以下の研究のために作成した．
+
+* ランダムグラフアンサンブルにおける最小頂点被覆に関する研究
+"""
+
+from __future__ import division, print_function
 import networkx
 import random
 import itertools
@@ -8,18 +15,22 @@ from collections import Counter
 
 
 def degree_dist(G):
+    "グラフGの次数分布を求める"
     return Counter(networkx.degree(G).values())
 
 
 class VertexCoverDistCalculator(object):
+    "頂点被覆分布計算機"
 
     def _ok_check_values(self, check_values):
+        "check_valuesが頂点被覆ならばTrue"
         for value in check_values:
             if value < 1:
                 return False
         return True
 
     def vertex_cover_dist(self, G):
+        "GのIP-頂点被覆分布を計算する"
         n = G.number_of_nodes()
         constraint_graph = ConstraintGraph(G)
         ret_dist = Counter()
@@ -33,6 +44,7 @@ class VertexCoverDistCalculator(object):
         return ret_dist
 
     def lp_vertex_cover_dist(self, G):
+        "GのLP-頂点被覆分布を計算する"
         n = G.number_of_nodes()
         constraint_graph = ConstraintGraph(G)
         ret_table = Counter()
@@ -48,6 +60,7 @@ class VertexCoverDistCalculator(object):
 
 
 class VertexCoverSolver(object):
+    "最小頂点被覆問題を計算機"
 
     def __init__(self, results_stream=None, log_stream=None,
                  error_stream=None, warning_stream=None):
@@ -57,10 +70,12 @@ class VertexCoverSolver(object):
         self._warning_stream = warning_stream
 
     def lp_solve(self, G):
+        "Gの最小頂点問題のLP解を出す"
         values = self._solve_with_cplex(G, easing=True)
         return VertexCoverSolver.LPSolution(G.nodes(), values)
 
     def ip_solve(self, G):
+        "Gの最小頂点問題のIP解を出す"
         values = self._solve_with_cplex(G, easing=False)
         return VertexCoverSolver.IPSolution(G.nodes(), values)
 
@@ -108,7 +123,7 @@ class VertexCoverSolver(object):
             # 線形式の係数リスト
             lin_expr=coefficients,
             # 不等号の向き
-            senses=b"G" * G.number_of_edges(),
+            senses="G" * G.number_of_edges(),
             # 右辺の値
             rhs=[1.0 for i in range(G.number_of_edges())],
             # 式の名前
@@ -119,18 +134,22 @@ class VertexCoverSolver(object):
         return solver.solution.get_values()
 
     class Solution(object):
+        "最小頂点被覆問題の解"
 
         def __init__(self, nodes, values):
             self._nodes = tuple(nodes)
             self._values = tuple(values)
 
         def nodes(self):
+            "頂点（変数）リスト"
             return tuple(self._nodes)
 
         def values(self):
+            "頂点（変数）へ割り当てられた値"
             return tuple(self._values)
 
         def opt_value(self):
+            "最小頂点被覆のサイズ（最適値）"
             return sum(self._values)
 
         def values_dict(self):
@@ -142,14 +161,19 @@ class VertexCoverSolver(object):
             return "{}".format(self.values_dict())
 
     class LPSolution(Solution):
+        "最小頂点被覆問題のLP解"
         pass
 
     class IPSolution(Solution):
+        "最小頂点被覆問題のIP解"
         pass
 
 
 class GraphEnsembleFactory(object):
+    "グラフアンサンブルのファクトリークラス"
+
     def create(self, type, params):
+        "グラフアンサンブルtypeのインスタンスをパラメータparamsで生成する"
         if type == "SpecifiedDegreeDistEnsemble":
             return SpecifiedDegreeDistEnsemble(**params)
         elif type == "MultiGraphEnsemble":
@@ -159,17 +183,24 @@ class GraphEnsembleFactory(object):
 
 
 class GraphEnsemble(object):
+    "グラフアンサンブルの基底クラス"
+
     def number_of_nodes(self):
+        "頂点数を返す"
         return None
 
     def number_of_edges(self):
+        "辺数を返す"
         return None
 
     def generate_graph(self):
+        "グラフアンサンブルのインスタンスをひとつランダムに生成する"
         return None
 
 
 class MultiGraphEnsemble(GraphEnsemble):
+    "自己ループと多重辺を許した(n,m)-ランダムグラフアンサンブル"
+
     def __init__(self, num_of_nodes, num_of_edges):
         self.num_of_nodes = num_of_nodes
         self.num_of_edges = num_of_edges
@@ -200,10 +231,16 @@ class MultiGraphEnsemble(GraphEnsemble):
 
 
 class SpecifiedDegreeDistEnsemble(GraphEnsemble):
+    """次数分布を指定したランダムグラフアンサンブル
+
+    ここで，次数分布とは，整数のリストdegree_distである．
+    degree_dist[i]は，次数iの頂点の個数を表す．
+    """
+
     def __init__(self, degree_dist):
         hands_count = sum([i * dist for i, dist in enumerate(degree_dist)])
         if hands_count % 2 != 0:
-            raise DegreeDistError("次数の合計が2で割り切れない")
+            raise DegreeDistError(u"次数の合計が2で割り切れない")
         self.degree_dist = tuple(degree_dist)
 
     def number_of_nodes(self):
@@ -222,7 +259,7 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
         for d, dist in enumerate(self.degree_dist):
             for i in range(dist):
                 n = shuffled_nodes.pop()
-                #print("頂点{0}を次数{1}にする".format(n,d))
+                # 頂点nを次数dにする
                 G.add_node(n)
                 edge_num_table.extend([n] * d)
 
@@ -241,14 +278,20 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
 
 
 class ConstraintGraph(object):
+    "オリジナルグラフGの各辺に，頂点（チェックノード）を追加した二部グラフ"
+
     def __init__(self, G, check_function=lambda u, v: u + v):
         self.original_graph = G
         self.check_function = check_function
 
     def calc_check_values(self, variable_values):
+        """チェックノード値を計算する
+
+        variable_valuesは各頂点に割り当てる値を表すリストである．
+        """
         G = self.original_graph
         if len(variable_values) != G.number_of_nodes():
-            raise ValueError("variable_valuesのサイズがおかしい")
+            raise ValueError(u"variable_valuesのサイズがおかしい")
 
         check_values = []
         for u, v in G.edges():

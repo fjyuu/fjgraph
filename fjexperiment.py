@@ -1,12 +1,18 @@
 #coding: utf-8
 
-from __future__ import division, print_function, unicode_literals
+"""典型的な実験
+
+頻繁に行う実験を集めた．
+"""
+
+from __future__ import division, print_function
 import fjgraph
 import fjutil
 from collections import Counter
 
 
 def ave_vertex_cover_dist(ensemble, number_of_trials):
+    "平均IP-頂点被覆分布を実験的に求める"
     sum_dist = Counter()
     dist_calc = fjgraph.VertexCoverDistCalculator()
 
@@ -32,6 +38,7 @@ output:
 
 
 def ave_lp_vertex_cover_dist(ensemble, number_of_trials):
+    "平均LP-頂点被覆分布を実験的に求める"
     sum_table = Counter()
     dist_calc = fjgraph.VertexCoverDistCalculator()
 
@@ -58,11 +65,13 @@ output:
 
 
 def count_one_half(values):
+    "valuesの中に1/2はいくつあるか求める"
     counter = Counter(values)
     return counter[1/2]
 
 
 def ip_lp_ensemble(ensemble, number_of_trials):
+    "アンサンブルにおけるIP解とLP解を比較する"
     sum_number_of_one_half = 0
     sum_lp_opt_value = 0.0
     sum_ip_opt_value = 0.0
@@ -121,8 +130,7 @@ def ip_lp_ensemble(ensemble, number_of_trials):
 
 
 def prob_dist_min_vertex_cover(ensemble, num_of_trials):
-    "最小頂点被覆サイズの確率分布を実験的に求める"
-
+    "最小頂点被覆問題のIP-最適値の確率分布を実験的に求める"
     print("= prob_min_vertex_cover =")
     print("""input:
  * ensemble: {}
@@ -137,8 +145,7 @@ def prob_dist_min_vertex_cover(ensemble, num_of_trials):
 
 
 def prob_dist_lp_min_vertex_cover(ensemble, num_of_trials):
-    "半整数を許したときの最小頂点被覆サイズの確率分布を実験的に求める"
-
+    "最小頂点被覆問題のLP-最適値の確率分布を実験的に求める"
     print("= prob_lp_min_vertex_cover =")
     print("""input:
  * ensemble: {}
@@ -153,6 +160,7 @@ def prob_dist_lp_min_vertex_cover(ensemble, num_of_trials):
 
 
 def _prob_min_vertex_cover(ensemble, num_of_trials, type="IP"):
+    "最小頂点被覆問題を解く"
     min_vertex_dist = Counter()
     solver = fjgraph.VertexCoverSolver()
     progress_bar = fjutil.ProgressBar("Calculation", 80)
@@ -165,7 +173,7 @@ def _prob_min_vertex_cover(ensemble, num_of_trials, type="IP"):
         elif type == "LP":
             solution = solver.lp_solve(G)
         else:
-            raise ExperimentError("typeは'IP'もしくは'LP'でなければいけません")
+            raise ExperimentError(u"typeは'IP'もしくは'LP'でなければいけません")
         opt_value = solution.opt_value()
         min_vertex_dist[round(opt_value, 1)] += 1 # 小数点第2位以下は誤差
         progress_bar.write(i / num_of_trials)
