@@ -53,11 +53,11 @@ class VertexCoverDistCalculator(object):
         ret_table = Counter()
 
         for variable_values in itertools.product([0, 0.5, 1], repeat=n):
-            number_of_one_half = variable_values.count(0.5)
-            number_of_one = variable_values.count(1)
+            num_of_one_half = variable_values.count(0.5)
+            num_of_one = variable_values.count(1)
             check_values = constraint_graph.calc_check_values(variable_values)
             if self._ok_check_values(check_values):
-                ret_table[(number_of_one_half, number_of_one)] += 1
+                ret_table[(num_of_one_half, num_of_one)] += 1
 
         return ret_table
 
@@ -188,11 +188,11 @@ class GraphEnsembleFactory(object):
 class GraphEnsemble(object):
     "グラフアンサンブルの基底クラス"
 
-    def number_of_nodes(self):
+    def num_of_nodes(self):
         "頂点数を返す"
         return None
 
-    def number_of_edges(self):
+    def num_of_edges(self):
         "辺数を返す"
         return None
 
@@ -208,10 +208,10 @@ class MultiGraphEnsemble(GraphEnsemble):
         self.num_of_nodes = num_of_nodes
         self.num_of_edges = num_of_edges
 
-    def number_of_nodes(self):
+    def num_of_nodes(self):
         return self.num_of_nodes
 
-    def number_of_edges(self):
+    def num_of_edges(self):
         return self.num_of_edges
 
     def generate_graph(self):
@@ -246,14 +246,14 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
             raise DegreeDistError(u"次数の合計が2で割り切れない")
         self.degree_dist = tuple(degree_dist)
 
-    def number_of_nodes(self):
+    def num_of_nodes(self):
         return sum(self.degree_dist)
 
-    def number_of_edges(self):
+    def num_of_edges(self):
         return sum([i * dist for i, dist in enumerate(self.degree_dist)]) / 2
 
     def generate_graph(self):
-        node_size = self.number_of_nodes()
+        node_size = self.num_of_nodes()
 
         shuffled_nodes = list(range(node_size))
         random.shuffle(shuffled_nodes)
@@ -277,7 +277,7 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
     def __str__(self):
         return "{}(degree_dist={}) [n={}, m={}]".format(
             self.__class__.__name__, self.degree_dist,
-            self.number_of_nodes(), self.number_of_edges())
+            self.num_of_nodes(), self.num_of_edges())
 
 
 class ConstraintGraph(object):

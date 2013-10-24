@@ -54,8 +54,8 @@ def lp_ip_ensemble_experiment():
     # 結果出力
     r = fjexperiment.ip_lp_ensemble(ensemble, opts.trials)
     print("= main result =")
-    print("ave_number_of_one_half: {:.4} ({:.2%})".format(
-            r["ave_number_of_one_half"], r["ave_number_of_one_half_ratio"]))
+    print("ave_num_of_one_half: {:.4} ({:.2%})".format(
+            r["ave_num_of_one_half"], r["ave_num_of_one_half_ratio"]))
     print("ave_opt_ration: {:.4}".format(r["ave_opt_ration"]))
     print("ave_lp_opt_value: {:.4}".format(r["ave_lp_opt_value"]))
     print("ave_ip_opt_value: {:.4}".format(r["ave_ip_opt_value"]))

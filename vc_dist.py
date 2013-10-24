@@ -82,7 +82,7 @@ def ave_vertex_cover_dist_experiment():
 
     # ファイル出力
     if opts.output:
-        n = ensemble.number_of_nodes()
+        n = ensemble.num_of_nodes()
         ip_file = open(opts.output + "-ip.dat", "w")
         fillup_ip_dist = fjutil.fillup_dist(ave_ip_dist,
                                             start=0, stop=n, step=1)
