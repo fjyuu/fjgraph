@@ -92,7 +92,7 @@ def ip_lp_ensemble(ensemble, num_of_trials):
  * ave_opt_ration
  * ave_lp_opt_value
  * ave_ip_opt_value
- * lp_equal_ip_ratio""")
+ * lp_equal_ip_prob""")
 
     progress_bar = fjutil.ProgressBar("Calculation", 80)
     progress_bar.begin()
@@ -123,13 +123,13 @@ def ip_lp_ensemble(ensemble, num_of_trials):
         ave_num_of_one_half / ensemble.num_of_nodes()
     ave_lp_opt_value = sum_lp_opt_value / num_of_trials
     ave_ip_opt_value = sum_ip_opt_value / num_of_trials
-    lp_equal_ip_ratio = count_lp_equal_ip / num_of_trials
+    lp_equal_ip_prob = count_lp_equal_ip / num_of_trials
     return {"ave_num_of_one_half": ave_num_of_one_half,
             "ave_num_of_one_half_ratio": ave_ratio_of_one_half,
             "ave_opt_ration": ave_opt_ration,
             "ave_lp_opt_value": ave_lp_opt_value,
             "ave_ip_opt_value": ave_ip_opt_value,
-            "lp_equal_ip_ratio": lp_equal_ip_ratio}
+            "lp_equal_ip_prob": lp_equal_ip_prob}
 
 
 def prob_dist_min_vertex_cover(ensemble, num_of_trials):
