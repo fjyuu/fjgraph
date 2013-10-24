@@ -250,7 +250,8 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
         return sum(self.degree_dist)
 
     def num_of_edges(self):
-        return sum([i * dist for i, dist in enumerate(self.degree_dist)]) / 2
+        sum_degree = sum([i * dist for i, dist in enumerate(self.degree_dist)])
+        return int(sum_degree / 2)
 
     def generate_graph(self):
         node_size = self.num_of_nodes()
