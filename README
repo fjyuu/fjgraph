@@ -1,8 +1,9 @@
-# 頂点被覆問題 #
+# 研究用プログラム #
 
-## 動作環境 ##
+## 動作を確認した環境 ##
 
 * Python 2.7.5
+* CPLEX 12.5
 
 ## 依存モジュールのインストール ##
 
@@ -12,29 +13,77 @@
 
     $ python -m unittest discover -v -f
 
+## ライブラリ ##
+
+* fjexperiment.py
+* fjgraph.py
+* fjutil.py
+
 ## 実験スクリプト ##
 
-### pattern.py ###
+* vc_dist.py
+* ip_lp.py
+* prob_dist_min_vc.py
 
-#### 概要 ####
+### vc_dist.py ###
 
-アンサンブルにおける平均頂点被覆分布の実験値を求める
+与えられたグラフアンサンブルにおける，
 
-#### 実行例 ####
+* IP-平均頂点被覆分布
+* LP-平均頂点被覆分布
 
-    $ ./pattern.py ensemble.json
+を実験値を求める．
+
+実行例：
+
+    # ヘルプ
+    $ ./vc_dist.py --help
+
+    # デフォルトパラメータで実行
+    $ ./vc_dist.py ensemble.json
+
+    # 試行回数：2000，gnuplot用結果出力ファイル名：result1
+    $ ./vc_dist.py --trials 2000 --output result1 ensemble.json
 
 ### ip_lp.py ###
 
-#### 概要 ####
+与えられたグラフアンサンブルに対して，
+
+* LPで解いたときの1/2の個数の平均
+* LPで解いたときの目的関数値 / IPで解いたときの目的関数値 の平均
+* LP最適値の平均
+* IP最適値の平均
+* LP最適値とIP最適値が等しくなる確率
+
+を実験的に求める．
+
+実行例：
+
+    # ヘルプ
+    $ ./ip_lp.py --help
+
+    # デフォルトパラメータで実行
+    $ ./ip_lp.py ensemble.json
+
+    # 試行回数：2000
+    $ ./ip_lp.py  --trials 2000 ensemble.json
+
+### prob_dist_min_vc.py ###
 
 与えられたグラフアンサンブルに対して，
 
-* LPで解いたときの1/2の個数
-* LPで解いたときの目的関数値 / IPで解いたときの目的関数値
+* IP-最小頂点被覆最適値がdelta以上の確率分布
+* LP-最小頂点被覆最適値がdelta以上の確率分布
 
-の平均値を求める
+を実験的に求める．
 
-#### 実験例 ####
+実行例：
 
-    $ ./ip_lp.py ensemble.json
+    # ヘルプ
+    $ ./prob_dist_min_vc.py --help
+
+    # デフォルトパラメータで実行
+    $ ./prob_dist_min_vc.py ensemble.json
+
+    # 試行回数：2000，gnuplot用結果出力ファイル名：result2
+    $ ./prob_dist_min_vc.py --trials 2000 --output result2 ensemble.json
