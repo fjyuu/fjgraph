@@ -15,17 +15,17 @@
 
 ## ライブラリ ##
 
-* fjexperiment.py
-* fjgraph.py
-* fjutil.py
+* `fjexperiment.py`
+* `fjgraph.py`
+* `fjutil.py`
 
 ## 実験スクリプト ##
 
-* vc_dist.py
-* ip_lp.py
-* prob_dist_min_vc.py
+* `vc_dist.py`
+* `ip_lp.py`
+* `prob_dist_min_vc.py`
 
-### vc_dist.py ###
+### `vc_dist.py` ###
 
 与えられたグラフアンサンブルにおける，
 
@@ -45,7 +45,7 @@
     # 試行回数：2000，gnuplot用結果出力ファイル名：result1
     $ ./vc_dist.py --trials 2000 --output result1 ensemble.json
 
-### ip_lp.py ###
+### `ip_lp.py` ###
 
 与えられたグラフアンサンブルに対して，
 
@@ -68,7 +68,7 @@
     # 試行回数：2000
     $ ./ip_lp.py  --trials 2000 ensemble.json
 
-### prob_dist_min_vc.py ###
+### `prob_dist_min_vc.py` ###
 
 与えられたグラフアンサンブルに対して，
 
@@ -87,3 +87,7 @@
 
     # 試行回数：2000，gnuplot用結果出力ファイル名：result2
     $ ./prob_dist_min_vc.py --trials 2000 --output result2 ensemble.json
+
+## ライセンス ##
+
+MITライセンス

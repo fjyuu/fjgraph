@@ -3,6 +3,9 @@
 
 "平均頂点被覆分布を実験的に求めるプログラム"
 
+# Copyright (c) 2013 Yuki Fujii
+# Licensed under the MIT License
+
 from __future__ import division, print_function
 import fjgraph
 import fjutil
