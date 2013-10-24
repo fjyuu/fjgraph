@@ -182,7 +182,7 @@ class GraphEnsembleFactory(object):
         elif type == "MultiGraphEnsemble":
             return MultiGraphEnsemble(**params)
         else:
-            raise FJGraphError("アンサンブルタイプが存在しない")
+            raise FJGraphError(u"アンサンブルタイプが存在しない")
 
 
 class GraphEnsemble(object):
