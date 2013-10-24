@@ -80,7 +80,7 @@ def ip_lp_ensemble(ensemble, num_of_trials):
     sum_ip_opt_value = 0.0
     sum_opt_ratio = 0.0
     count_lp_equal_ip = 0
-    sum_defference_opt = 0.0
+    sum_difference_opt = 0.0
     solver = fjgraph.VertexCoverSolver()
 
     print("= ip_lp_ensemble =")
@@ -112,7 +112,7 @@ def ip_lp_ensemble(ensemble, num_of_trials):
         sum_opt_ratio += lp_opt_value / ip_opt_value
         sum_lp_opt_value += lp_opt_value
         sum_ip_opt_value += ip_opt_value
-        sum_defference_opt += ip_opt_value - lp_opt_value
+        sum_difference_opt += ip_opt_value - lp_opt_value
         if lp_opt_value == ip_opt_value:
             count_lp_equal_ip += 1
         progress_bar.write(i / num_of_trials)
@@ -127,14 +127,14 @@ def ip_lp_ensemble(ensemble, num_of_trials):
     ave_lp_opt_value = sum_lp_opt_value / num_of_trials
     ave_ip_opt_value = sum_ip_opt_value / num_of_trials
     lp_equal_ip_prob = count_lp_equal_ip / num_of_trials
-    ave_defference_opt = sum_defference_opt / num_of_trials
+    ave_difference_opt = sum_difference_opt / num_of_trials
     return {"ave_num_of_one_half": ave_num_of_one_half,
             "ave_num_of_one_half_ratio": ave_ratio_of_one_half,
             "ave_opt_ration": ave_opt_ration,
             "ave_lp_opt_value": ave_lp_opt_value,
             "ave_ip_opt_value": ave_ip_opt_value,
             "lp_equal_ip_prob": lp_equal_ip_prob,
-            "ave_defference_opt": ave_defference_opt}
+            "ave_difference_opt": ave_difference_opt}
 
 
 def prob_dist_min_vertex_cover(ensemble, num_of_trials):
