@@ -80,3 +80,23 @@ def fillup_dist(dist, start=None, stop=None, step=1, fill=0.0):
         if key not in dist:
             dist[key] = fill
     return dist
+
+
+def str2float(*floats):
+    """文字列を浮動小数点に変換する
+
+    例：
+
+    '1.1' -> 1.1
+    '2e2' -> 200.0
+    '2e'  -> 2.0
+    """
+    ret = []
+    for value in floats:
+        striped = value.rstrip("e")
+        ret.append(float(striped))
+
+    if len(ret) == 1:
+        return ret[0]
+    else:
+        return tuple(ret)
