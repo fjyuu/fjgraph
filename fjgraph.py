@@ -324,7 +324,7 @@ class ThreeWayCutSetDistCalculator(object):
         return count[0], count[1], count[2]
 
     def detailed_cutset_dist(self, G):
-        """カットセットサイズの分布A_G(j,k,l;w)を計算する
+        """詳細カットセット分布A_G(j,k,l;w)を計算する
 
         A_G(j,k,l;w): 頂点をR（サイズj）, S（サイズk）, T（サイズl）の
         集合に3分割するときに，カットセットサイズがwになるパターン数
