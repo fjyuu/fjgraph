@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import unittest
 import fjgraph
 import networkx
@@ -72,3 +74,37 @@ class VertexCoverSolverTest(unittest.TestCase):
         self.assertEqual(ip_solution.opt_value(), 1.0)
         self.assertEqual(ip_solution.values_dict(),
                          {0: 1.0})
+
+
+class ThreeWayCutSetDistCalculatorTest(unittest.TestCase):
+    "ThreeWayCutSetDistCalculatorクラスのテスト"
+
+    @classmethod
+    def setUpClass(self):
+        self.calc = fjgraph.ThreeWayCutSetDistCalculator()
+
+    def test_detailed_cutset_dist(self):
+        "詳細カットセット分布を計算する"
+
+        calc = self.calc
+
+        G = networkx.MultiGraph()
+        G.add_edge(0, 1)
+        G.add_edge(1, 2)
+        G.add_edge(2, 0)
+
+        ret = calc.detailed_cutset_dist(G)
+        self.assertEqual(ret[(1, 1, 1, 3)], 6)
+
+        # (j, k, l, w) num_of_patterns
+        # ----------------------------
+        # (0, 0, 3, 0) 1
+        # (0, 1, 2, 2) 3
+        # (0, 2, 1, 2) 3
+        # (0, 3, 0, 0) 1
+        # (1, 0, 2, 2) 3
+        # (1, 1, 1, 3) 6
+        # (1, 2, 0, 2) 3
+        # (2, 0, 1, 2) 3
+        # (2, 1, 0, 2) 3
+        # (3, 0, 0, 0) 1

@@ -5,6 +5,7 @@
 以下の研究のために作成した．
 
 * ランダムグラフアンサンブルにおける最小頂点被覆に関する研究
+* ランダムグラフアンサンブルにおける3分割カットに関する研究
 """
 
 # Copyright (c) 2013 Yuki Fujii
@@ -311,3 +312,38 @@ class FJGraphError(Exception):
 
 class DegreeDistError(FJGraphError):
     pass
+
+
+class ThreeWayCutSetDistCalculator(object):
+    "3分割カットセット分布計算機"
+
+    def _partition_size(self, variable_values):
+        "0,1,2の個数を数えてそれぞれ返す"
+
+        count = Counter(variable_values)
+        return count[0], count[1], count[2]
+
+    def detailed_cutset_dist(self, G):
+        """カットセットサイズの分布A_G(j,k,l;w)を計算する
+
+        A_G(j,k,l;w): 頂点をR（サイズj）, S（サイズk）, T（サイズl）の
+        集合に3分割するときに，カットセットサイズがwになるパターン数
+        """
+
+        def check_cut_set(u, v):
+            if u != v:
+                return 1
+            else:
+                return 0
+
+        n = G.number_of_nodes()
+        constraint_graph = ConstraintGraph(G, check_cut_set)
+        ret_dist = Counter()
+
+        for variable_values in itertools.product([0, 1, 2], repeat=n):
+            check_values = constraint_graph.calc_check_values(variable_values)
+            w = sum(check_values)
+            j, k, l = self._partition_size(variable_values)
+            ret_dist[(j, k, l, w)] += 1
+
+        return ret_dist
