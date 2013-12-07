@@ -14,6 +14,33 @@ import fjutil
 from collections import Counter
 
 
+def ave_3way_detailed_cutset_dist(ensemble, num_of_trials):
+    "平均3分割詳細カットセット分布を実験的に求める"
+
+    sum_dist = Counter()
+    calc = fjgraph.ThreeWayCutSetDistCalculator()
+
+    print("""= ave_3way_detailed_cutset_dist =
+input:
+ * ensemble: {}
+ * num_of_trials: {}
+output:
+ * ave_3way_detailed_cutset_dist""".format(ensemble, num_of_trials))
+
+    progress_bar = fjutil.ProgressBar("Calculation", 80)
+    progress_bar.begin()
+    for i in range(num_of_trials):
+        G = ensemble.generate_graph()
+        ret_dist = calc.detailed_cutset_dist(G)
+        sum_dist += ret_dist
+        progress_bar.write(i / num_of_trials)
+    progress_bar.end()
+
+    ave_dist = Counter(dict((key, value / num_of_trials)
+                            for key, value in sum_dist.items()))
+    return ave_dist
+
+
 def ave_vertex_cover_dist(ensemble, num_of_trials):
     "平均IP-頂点被覆分布を実験的に求める"
     sum_dist = Counter()
