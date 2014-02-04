@@ -108,3 +108,36 @@ class ThreeWayCutSetDistCalculatorTest(unittest.TestCase):
         # (2, 0, 1, 2) 3
         # (2, 1, 0, 2) 3
         # (3, 0, 0, 0) 1
+
+    def test_all_cutset(self):
+        "すべての3分割カットセットを求める"
+
+        calc = self.calc
+
+        G = networkx.MultiGraph()
+        G.add_edge(0, 1)
+        G.add_edge(1, 2)
+        G.add_edge(2, 0)
+
+        ret = calc.all_cutset(G)
+
+        # 3分割カットセットは1パターンのみ
+        self.assertEqual(len(ret), 1)
+        edges = frozenset(G.edges())
+        self.assertTrue(edges in ret)
+
+    def test_cutset_dist(self):
+        "3分割カットセット重み分布を求める"
+
+        calc = self.calc
+
+        G = networkx.MultiGraph()
+        G.add_edge(0, 1)
+        G.add_edge(1, 2)
+        G.add_edge(2, 0)
+
+        ret = calc.cutset_dist(G)
+        self.assertEqual(ret[0], 0)
+        self.assertEqual(ret[1], 0)
+        self.assertEqual(ret[2], 0)
+        self.assertEqual(ret[3], 1)

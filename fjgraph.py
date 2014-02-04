@@ -323,6 +323,13 @@ class ThreeWayCutSetDistCalculator(object):
         count = Counter(variable_values)
         return count[0], count[1], count[2]
 
+    @staticmethod
+    def _check_cut_set(u, v):
+        if u != v:
+            return 1
+        else:
+            return 0
+
     def detailed_cutset_dist(self, G):
         """詳細カットセット分布A_G(j,k,l;w)を計算する
 
@@ -330,14 +337,8 @@ class ThreeWayCutSetDistCalculator(object):
         集合に3分割するときに，カットセットサイズがwになるパターン数
         """
 
-        def check_cut_set(u, v):
-            if u != v:
-                return 1
-            else:
-                return 0
-
         n = G.number_of_nodes()
-        constraint_graph = ConstraintGraph(G, check_cut_set)
+        constraint_graph = ConstraintGraph(G, self._check_cut_set)
         ret_dist = Counter()
 
         for variable_values in itertools.product([0, 1, 2], repeat=n):
@@ -347,3 +348,38 @@ class ThreeWayCutSetDistCalculator(object):
             ret_dist[(j, k, l, w)] += 1
 
         return ret_dist
+
+    def all_cutset(self, G):
+        "すべての3分割カットセットを求める"
+
+        n = G.number_of_nodes()
+        edges = G.edges()
+        constraint_graph = ConstraintGraph(G, self._check_cut_set)
+        cutsets = set()
+
+        for variable_values in itertools.product([0, 1, 2], repeat=n):
+            if 0 not in variable_values:
+                continue
+            if 1 not in variable_values:
+                continue
+            if 2 not in variable_values:
+                continue
+            check_values = constraint_graph.calc_check_values(variable_values)
+            cutset = []
+            for i, value in enumerate(check_values):
+                if value == 1:
+                    cutset.append(edges[i])
+            cutsets.add(frozenset(cutset))
+
+        return cutsets
+
+    def cutset_dist(self, G):
+        "3分割カット重み分布を求める"
+
+        cutset_dist = Counter()
+        cutsets = self.all_cutset(G)
+        for cutset in cutsets:
+            weight = len(cutset)
+            cutset_dist[weight] += 1
+
+        return cutset_dist
