@@ -224,7 +224,7 @@ class MultiGraphEnsemble(GraphEnsemble):
         for edge in range(m):
             s = random.randint(0, n - 1)
             t = random.randint(0, n - 1)
-            G.add_edge(s, t)
+            G.add_edge(s, t, weght=1)
 
         return G
 
