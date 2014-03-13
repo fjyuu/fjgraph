@@ -254,16 +254,16 @@ def _prob_dist_min_cut(ensemble, num_of_trials, type="global"):
     "s-t最小カット重みもしくは全域最小カット重みの確率分布を実験的に求める"
 
     sum_dist = Counter()
-    solver = fjgraph.MinCutSolver()
+    calc = fjgraph.MinCutCalculator()
     progress_bar = fjutil.ProgressBar("Calculation", 80)
 
     progress_bar.begin()
     for i in range(num_of_trials):
         G = ensemble.generate_graph()
         if type == "st":
-            min_cut = solver.st_mincut(G, 0, 1)
+            min_cut = calc.st_mincut(G, 0, 1)
         elif type == "global":
-            min_cut = solver.global_mincut(G)
+            min_cut = calc.global_mincut(G)
         else:
             raise ExperimentError(u"typeは'st'もしくは'global'でなければいけません")
         sum_dist[min_cut] += 1

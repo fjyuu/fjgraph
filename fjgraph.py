@@ -25,8 +25,8 @@ def degree_dist(G):
     return Counter(networkx.degree(G).values())
 
 
-class MinCutSolver(object):
-    "最小カット問題のソルバー"
+class MinCutCalculator(object):
+    "最小カット重みを求めるためのクラス"
 
     def _simplify_multigraph(self, graph):
         if not isinstance(graph, networkx.MultiGraph):
