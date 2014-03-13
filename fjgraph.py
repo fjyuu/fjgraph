@@ -184,6 +184,8 @@ class GraphEnsembleFactory(object):
             return MultiGraphEnsemble(**params)
         elif type == "ErdosRenyiGraphEnsemble":
             return ErdosRenyiGraphEnsemble(**params)
+        elif type == "NMGraphEnsemble":
+            return NMGraphEnsemble(**params)
         else:
             raise FJGraphError(u"アンサンブルタイプが存在しない")
 
@@ -202,6 +204,28 @@ class GraphEnsemble(object):
     def generate_graph(self):
         "グラフアンサンブルのインスタンスをひとつランダムに生成する"
         return None
+
+
+class NMGraphEnsemble(GraphEnsemble):
+    "頂点数nと辺数mを指定するランダムグラフアンサンブル"
+
+    def __init__(self, num_of_nodes, num_of_edges):
+        self._num_of_nodes = num_of_nodes
+        self._num_of_edges = num_of_edges
+
+    def num_of_nodes(self):
+        return self._num_of_nodes
+
+    def num_of_edges(self):
+        return self._num_of_edges
+
+    def generate_graph(self):
+        n = self._num_of_nodes
+        m = self._num_of_edges
+        G = networkx.gnm_random_graph(n, m)
+        for u, v in G.edges():
+            G[u][v]['weight'] = 1
+        return G
 
 
 class ErdosRenyiGraphEnsemble(GraphEnsemble):

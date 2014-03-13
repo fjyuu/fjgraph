@@ -155,3 +155,22 @@ class ErdosRenyiGraphEnsembleTest(unittest.TestCase):
         self.assertEqual(ensemble.num_of_nodes(), n)
         G = ensemble.generate_graph()
         self.assertTrue(isinstance(G, networkx.Graph))
+        self.assertTrue(not isinstance(G, networkx.MultiGraph))
+
+
+class NMGraphEnsembleTest(unittest.TestCase):
+
+    def test_generate_graph(self):
+        n = 10
+        m = 10
+        ensemble = fjgraph.NMGraphEnsemble(
+            num_of_nodes=n,
+            num_of_edges=m
+        )
+        self.assertEqual(ensemble.num_of_nodes(), n)
+        self.assertEqual(ensemble.num_of_edges(), m)
+        G = ensemble.generate_graph()
+        self.assertTrue(isinstance(G, networkx.Graph))
+        self.assertTrue(not isinstance(G, networkx.MultiGraph))
+        self.assertEqual(G.number_of_nodes(), n)
+        self.assertEqual(G.number_of_edges(), m)
