@@ -216,5 +216,57 @@ def _prob_min_vertex_cover(ensemble, num_of_trials, type="IP"):
 
     return min_vertex_dist
 
+
+def prob_dist_global_min_cut(ensemble, num_of_trials):
+    "全域最小カット重みの確率分布を実験的に求める"
+
+    print("= prob_dist_global_min_cut =")
+    print("""input:
+ * ensemble: {}
+ * num_of_trials: {}""".format(ensemble, num_of_trials))
+    print("""output:
+ * prob_dist_global_min_cut""")
+
+    return _prob_dist_min_cut(ensemble, num_of_trials, type="global")
+
+
+def prob_dist_st_min_cut(ensemble, num_of_trials):
+    "s-t最小カット重みの確率分布を実験的に求める"
+
+    print("= prob_dist_st_min_cut =")
+    print("""input:
+ * ensemble: {}
+ * num_of_trials: {}""".format(ensemble, num_of_trials))
+    print("""output:
+ * prob_dist_st_min_cut""")
+
+    return _prob_dist_min_cut(ensemble, num_of_trials, type="st")
+
+
+def _prob_dist_min_cut(ensemble, num_of_trials, type="global"):
+    "s-t最小カット重みもしくは全域最小カット重みの確率分布を実験的に求める"
+
+    sum_dist = Counter()
+    solver = fjgraph.MinCutSolver()
+    progress_bar = fjutil.ProgressBar("Calculation", 80)
+
+    progress_bar.begin()
+    for i in range(num_of_trials):
+        G = ensemble.generate_graph()
+        if type == "st":
+            min_cut = solver.st_mincut(G, 0, 1)
+        elif type == "global":
+            min_cut = solver.global_mincut(G)
+        else:
+            raise ExperimentError(u"typeは'st'もしくは'global'でなければいけません")
+        sum_dist[min_cut] += 1
+        progress_bar.write(i / num_of_trials)
+    progress_bar.end()
+
+    return dict(
+        (key, value / num_of_trials) for key, value in sum_dist.items()
+    )
+
+
 class ExperimentError(Exception):
     pass

@@ -101,6 +101,26 @@
     # 試行回数：2000，gnuplot用結果出力ファイル名：result2
     $ ./prob_dist_min_vc.py --trials 2000 --output result2 ensemble.json
 
+### `prob_dist_min_cut.py` ###
+
+与えられたグラフアンサンブルに対して，
+
+* 全域最小カット重みがdelta以上の確率分布
+* s-t最小カット重みがdelta以上の確率分布
+
+を実験的に求める．
+
+実行例：
+
+    # ヘルプ
+    $ ./prob_dist_min_cut.py --help
+
+    # デフォルトパラメータで実行
+    $ ./prob_dist_min_cut.py ensemble.json
+
+    # 試行回数：2000，gnuplot用結果出力ファイル名：result3
+    $ ./prob_dist_min_cut.py --trials 2000 --output result3 ensemble.json
+
 ## ライセンス ##
 
 MITライセンス
