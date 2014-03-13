@@ -1,6 +1,6 @@
 {
     "type": "SpecifiedDegreeDistEnsemble",
     "params": {
-        "degree_dist": [0, 1, 2, 3, 4]
+        "degree_dist": [0, 4, 2]
     }
 }

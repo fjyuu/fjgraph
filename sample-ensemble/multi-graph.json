@@ -1,0 +1,7 @@
+{
+    "type": "MultiGraphEnsemble",
+    "params": {
+        "num_of_nodes": 10,
+        "num_of_edges": 10
+    }
+}
