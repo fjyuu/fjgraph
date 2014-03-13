@@ -23,6 +23,45 @@ def degree_dist(G):
     return Counter(networkx.degree(G).values())
 
 
+class MinCutSolver(object):
+    "最小カット問題のソルバー"
+
+    def _simplify_multigraph(self, graph):
+        if not isinstance(graph, networkx.MultiGraph):
+            raise FJGraphError("MultiGraphじゃない")
+        simple_graph = networkx.Graph()
+        simple_graph.add_nodes_from(graph.nodes())
+        for u, v in graph.edges():
+            if u == v: continue  # 自己ループ削除
+            if simple_graph.has_edge(u, v): continue
+            attrs = graph[u][v]
+            sum_weight = 0
+            for attr in attrs.values():
+                if "weight" in attr:
+                    sum_weight += attr["weight"]
+            simple_graph.add_edge(u, v, weight=sum_weight)
+        return simple_graph
+
+    def global_mincut(self, G):
+        "全域最小カット重みを求める"
+        if isinstance(G, networkx.MultiGraph):
+            G = self._simplify_multigraph(G)
+        mincut = None
+        nodes = G.nodes()
+        s = nodes.pop()
+        for t in nodes:
+            tmp = networkx.min_cut(G, s, t, capacity='weight')
+            if mincut == None or tmp < mincut:
+                mincut = tmp
+        return mincut
+
+    def st_mincut(self, G, s, t):
+        "s-t最小カットを求める"
+        if isinstance(G, networkx.MultiGraph):
+            G = self._simplify_multigraph(G)
+        return networkx.min_cut(G, s, t, capacity='weight')
+
+
 class VertexCoverDistCalculator(object):
     "頂点被覆分布計算機"
 

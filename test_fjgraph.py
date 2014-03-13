@@ -174,3 +174,29 @@ class NMGraphEnsembleTest(unittest.TestCase):
         self.assertTrue(not isinstance(G, networkx.MultiGraph))
         self.assertEqual(G.number_of_nodes(), n)
         self.assertEqual(G.number_of_edges(), m)
+
+
+class MinCutSolverTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(self):
+        self.solver = fjgraph.MinCutSolver()
+
+    def test_mincut(self):
+        G = networkx.MultiGraph()
+        G.add_edge(0,1, weight = 1)
+        G.add_edge(0,1, weight = 1)
+        G.add_edge(1,4, weight = 1)
+        G.add_edge(1,4, weight = 1)
+        G.add_edge(4,3, weight = 1)
+        G.add_edge(3,2, weight = 1)
+        G.add_edge(2,0, weight = 1)
+        G.add_edge(1,3, weight = 1)
+        G.add_edge(1,2, weight = 1)
+        G.add_edge(1,1, weight = 1)
+
+        mincut = self.solver.global_mincut(G)
+        self.assertEqual(mincut, 3)
+
+        st_mincut = self.solver.st_mincut(G, 0, 1)
+        self.assertEqual(st_mincut, 3)
