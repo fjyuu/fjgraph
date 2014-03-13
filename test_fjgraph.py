@@ -141,3 +141,17 @@ class ThreeWayCutSetDistCalculatorTest(unittest.TestCase):
         self.assertEqual(ret[1], 0)
         self.assertEqual(ret[2], 0)
         self.assertEqual(ret[3], 1)
+
+
+class ErdosRenyiGraphEnsembleTest(unittest.TestCase):
+
+    def test_generate_graph(self):
+        n = 10
+        p = 0.8
+        ensemble = fjgraph.ErdosRenyiGraphEnsemble(
+            num_of_nodes=n,
+            edge_prob=p
+        )
+        self.assertEqual(ensemble.num_of_nodes(), n)
+        G = ensemble.generate_graph()
+        self.assertTrue(isinstance(G, networkx.Graph))

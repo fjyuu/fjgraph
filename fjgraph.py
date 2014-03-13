@@ -182,6 +182,8 @@ class GraphEnsembleFactory(object):
             return SpecifiedDegreeDistEnsemble(**params)
         elif type == "MultiGraphEnsemble":
             return MultiGraphEnsemble(**params)
+        elif type == "ErdosRenyiGraphEnsemble":
+            return ErdosRenyiGraphEnsemble(**params)
         else:
             raise FJGraphError(u"アンサンブルタイプが存在しない")
 
@@ -200,6 +202,28 @@ class GraphEnsemble(object):
     def generate_graph(self):
         "グラフアンサンブルのインスタンスをひとつランダムに生成する"
         return None
+
+
+class ErdosRenyiGraphEnsemble(GraphEnsemble):
+    "頂点数nと辺の生成確率pを指定するランダムグラフアンサンブル"
+
+    def __init__(self, num_of_nodes, edge_prob):
+        self._num_of_nodes = num_of_nodes
+        self._edge_prob = edge_prob
+
+    def num_of_nodes(self):
+        return self._num_of_nodes
+
+    def num_of_edges(self):
+        raise FJGraphError(u"辺数は一定でない")
+
+    def generate_graph(self):
+        n = self._num_of_nodes
+        p = self._edge_prob
+        G = networkx.erdos_renyi_graph(n, p)
+        for u, v in G.edges():
+            G[u][v]['weight'] = 1
+        return G
 
 
 class MultiGraphEnsemble(GraphEnsemble):
