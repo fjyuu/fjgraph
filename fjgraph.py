@@ -293,18 +293,18 @@ class MultiGraphEnsemble(GraphEnsemble):
     "自己ループと多重辺を許した(n,m)-ランダムグラフアンサンブル"
 
     def __init__(self, num_of_nodes, num_of_edges):
-        self.num_of_nodes = num_of_nodes
-        self.num_of_edges = num_of_edges
+        self._num_of_nodes = num_of_nodes
+        self._num_of_edges = num_of_edges
 
     def num_of_nodes(self):
-        return self.num_of_nodes
+        return self._num_of_nodes
 
     def num_of_edges(self):
-        return self.num_of_edges
+        return self._num_of_edges
 
     def generate_graph(self):
-        n = self.num_of_nodes
-        m = self.num_of_edges
+        n = self._num_of_nodes
+        m = self._num_of_edges
 
         G = networkx.MultiGraph()
         G.add_nodes_from(range(n))
@@ -317,7 +317,7 @@ class MultiGraphEnsemble(GraphEnsemble):
 
     def __str__(self):
         return "{}(num_of_nodes={}, num_of_edges={})".format(
-            self.__class__.__name__, self.num_of_nodes, self.num_of_edges
+            self.__class__.__name__, self._num_of_nodes, self._num_of_edges
         )
 
 
