@@ -401,6 +401,57 @@ class DegreeDistError(FJGraphError):
     pass
 
 
+class CutSetDistCalculator(object):
+    "2分割カットセット重み分布計算機"
+
+    @staticmethod
+    def _check_cut_set(u, v):
+        if u != v:
+            return 1
+        else:
+            return 0
+
+    def detailed_global_cutset_dist(self, G):
+        """詳細全域カットセット重み分布A_G(u,w)を計算する
+
+        A_G(u,w): 頂点をu個のグループとn-u個のグループに分割するとき，カットセッ
+        トサイズがwになるパターン数
+        """
+
+        n = G.number_of_nodes()
+        constraint_graph = ConstraintGraph(G, self._check_cut_set)
+        ret_dist = Counter()
+
+        for variable_values in itertools.product([0, 1], repeat=n):
+            check_values = constraint_graph.calc_check_values(variable_values)
+            u = sum(variable_values)
+            w = sum(check_values)
+            ret_dist[(u, w)] += 1
+
+        return ret_dist
+
+    def detailed_st_cutset_dist(self, G, s, t):
+        """詳細s-tカットセット重み分布A_G^{s-t}(u,w)を計算する
+
+        A_G^{s-t}(u,w): 頂点をu個のグループとn-u個のグループに分割するとき，s-tカッ
+        トセットサイズがwになるパターン数
+        """
+
+        n = G.number_of_nodes()
+        constraint_graph = ConstraintGraph(G, self._check_cut_set)
+        ret_dist = Counter()
+
+        for variable_values in itertools.product([0, 1], repeat=n):
+            if variable_values[s] == variable_values[t]:
+                continue
+            check_values = constraint_graph.calc_check_values(variable_values)
+            u = sum(variable_values)
+            w = sum(check_values)
+            ret_dist[(u, w)] += 1
+
+        return ret_dist
+
+
 class ThreeWayCutSetDistCalculator(object):
     "3分割カットセット分布計算機"
 

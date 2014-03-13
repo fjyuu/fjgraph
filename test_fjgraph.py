@@ -3,6 +3,7 @@
 import unittest
 import fjgraph
 import networkx
+from collections import Counter
 
 
 class ConstraintGraphTest(unittest.TestCase):
@@ -200,3 +201,37 @@ class MinCutSolverTest(unittest.TestCase):
 
         st_mincut = self.solver.st_mincut(G, 0, 1)
         self.assertEqual(st_mincut, 3)
+
+
+class CutSetDistCalculatorTest(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(self):
+        self.calc = fjgraph.CutSetDistCalculator()
+        G = networkx.MultiGraph()
+        G.add_edge(0, 1)
+        G.add_edge(1, 2)
+        G.add_edge(2, 0)
+        self.G = G
+
+    def test_detailed_global_cutset_dist(self):
+        calc = self.calc
+        G = self.G
+        dist = calc.detailed_global_cutset_dist(G)
+        ok_dist = Counter({
+            (0, 0): 1,
+            (3, 0): 1,
+            (1, 2): 3,
+            (2, 2): 3,
+        })
+        self.assertEqual(dist, ok_dist)
+
+    def test_detailed_st_cutset_dist(self):
+        calc = self.calc
+        G = self.G
+        dist = calc.detailed_st_cutset_dist(G, 0, 1)
+        ok_dist = Counter({
+            (1, 2): 2,
+            (2, 2): 2,
+        })
+        self.assertEqual(dist, ok_dist)
