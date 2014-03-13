@@ -3,7 +3,7 @@
 
 "ランダムグラフアンサンブルにおける最小頂点被覆問題のIP解とLP解を比較するプログラム"
 
-# Copyright (c) 2013 Yuki Fujii
+# Copyright (c) 2013 Yuki Fujii @fjyuu
 # Licensed under the MIT License
 
 from __future__ import division, print_function

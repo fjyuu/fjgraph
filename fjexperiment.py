@@ -5,7 +5,7 @@
 頻繁に行う実験を集めた．
 """
 
-# Copyright (c) 2013 Yuki Fujii
+# Copyright (c) 2013 Yuki Fujii @fjyuu
 # Licensed under the MIT License
 
 from __future__ import division, print_function

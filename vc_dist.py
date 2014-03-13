@@ -3,7 +3,7 @@
 
 "平均頂点被覆分布を実験的に求めるプログラム"
 
-# Copyright (c) 2013 Yuki Fujii
+# Copyright (c) 2013 Yuki Fujii @fjyuu
 # Licensed under the MIT License
 
 from __future__ import division, print_function
