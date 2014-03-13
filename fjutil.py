@@ -66,6 +66,21 @@ def frange(start, stop, step):
         start += step
 
 
+def cumulative_prob_dist(prob_dist, step=1):
+    "確率分布から累積確率分布（x以上の確率の分布）を求める"
+
+    cumulative_prob_dist = {}
+    key_max = max(prob_dist.keys())
+    sum_prob = 0.0
+    for x in frange(key_max, 0, - step):
+        if x in prob_dist:
+            sum_prob += prob_dist[x]
+        cumulative_prob_dist[x] = sum_prob
+    cumulative_prob_dist[key_max + step] = 0
+
+    return cumulative_prob_dist
+
+
 def fillup_dist(dist, start=None, stop=None, step=1, fill=0.0):
     """分布を表すdistを補完する
 

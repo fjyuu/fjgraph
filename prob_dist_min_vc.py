@@ -48,20 +48,6 @@ def parse_arguments():
     return (opts, args[0])
 
 
-def cumulative_prob_dist(prob_dist, step=1):
-    cumulative_prob_dist = {}
-
-    key_max = max(prob_dist.keys())
-    sum_prob = 0.0
-    for x in fjutil.frange(key_max, 0, - step):
-        if x in prob_dist:
-            sum_prob += prob_dist[x]
-        cumulative_prob_dist[x] = sum_prob
-    cumulative_prob_dist[key_max + step] = 0
-
-    return cumulative_prob_dist
-
-
 def prob_dist_min_vertex_cover_experiment():
     # 引数処理
     (opts, json_file) = parse_arguments()
@@ -78,32 +64,38 @@ def prob_dist_min_vertex_cover_experiment():
     print()
 
     # 実験
-    prob_dist = fjexperiment.prob_dist_min_vertex_cover(ensemble, num_of_trials)
-    ip_c_prob_dist = cumulative_prob_dist(prob_dist, step=1)
+    ip_prob_dist = fjexperiment.prob_dist_min_vertex_cover(ensemble, num_of_trials)
+    ip_c_prob_dist = fjutil.cumulative_prob_dist(ip_prob_dist, step=1)
     lp_prob_dist = fjexperiment.prob_dist_lp_min_vertex_cover(ensemble, num_of_trials)
-    lp_c_prob_dist = cumulative_prob_dist(lp_prob_dist, step=0.5)
+    lp_c_prob_dist = fjutil.cumulative_prob_dist(lp_prob_dist, step=0.5)
 
     print("= main result =")
 
     if opts.probdist:
         print(u"最小頂点被覆サイズの確率分布:")
-        fjutil.print_counter(prob_dist, format="{:>5}: {}")
-    print(u"最小頂点被覆サイズがdelta以上の確率分布:")
-    fjutil.print_counter(ip_c_prob_dist, format="{:>5}: {}")
+        fjutil.print_counter(ip_prob_dist, format="{:>5}: {}")
+    else:
+        print(u"最小頂点被覆サイズがdelta以上の確率分布:")
+        fjutil.print_counter(ip_c_prob_dist, format="{:>5}: {}")
     print()
 
     if opts.probdist:
         print(u"半整数を許したときの最小頂点被覆サイズの確率分布:")
         fjutil.print_counter(lp_prob_dist, format="{:>5}: {}")
-    print(u"半整数を許したときの最小頂点被覆サイズがdelta以上の確率分布:")
-    fjutil.print_counter(lp_c_prob_dist, format="{:>5}: {}")
+    else:
+        print(u"半整数を許したときの最小頂点被覆サイズがdelta以上の確率分布:")
+        fjutil.print_counter(lp_c_prob_dist, format="{:>5}: {}")
 
     # ファイル出力
     if opts.output:
         ip_file = open(opts.output + "-ip.dat", "w")
-        fjutil.output_counter(ip_c_prob_dist, ip_file)
         lp_file = open(opts.output + "-lp.dat", "w")
-        fjutil.output_counter(lp_c_prob_dist, lp_file)
+        if opts.probdist:
+            fjutil.output_counter(ip_prob_dist, ip_file)
+            fjutil.output_counter(lp_prob_dist, lp_file)
+        else:
+            fjutil.output_counter(ip_c_prob_dist, ip_file)
+            fjutil.output_counter(lp_c_prob_dist, lp_file)
 
 
 if __name__ == '__main__':
