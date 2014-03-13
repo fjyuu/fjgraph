@@ -39,12 +39,14 @@ class ProgressBar(object):
 
 def print_dist(dist, format="{} {}"):
     "分布を表すdictを標準出力に書き出す"
+
     for item in sorted(dist.keys()):
         print(format.format(item, dist[item]))
 
 
 def output_dist(dist, file, format="{} {}"):
     "分布を表すdictをファイルに書き出す"
+
     for item in sorted(dist.keys()):
         file.write(format.format(item, dist[item]))
         file.write("\n")
@@ -52,6 +54,7 @@ def output_dist(dist, file, format="{} {}"):
 
 def load_json_file(file):
     "jsonファイルを読み込む"
+
     import json
     f = open(file, "r")
     ret = json.load(f)
@@ -61,6 +64,7 @@ def load_json_file(file):
 
 def frange(start, stop, step):
     "stepが小数でも大丈夫なrange"
+
     while (step > 0 and start < stop) or (step < 0 and stop < start):
         yield start
         start += step
@@ -87,6 +91,7 @@ def fillup_dist(dist, start=None, stop=None, step=1, fill=0.0):
     distが，startからstopまでの数をキーとして持っていなかった場合，
     fillで初期化する．
     """
+
     if start == None:
         start = min(dist.keys())
     if stop == None:
@@ -106,6 +111,7 @@ def str2float(*floats):
     '2e2' -> 200.0
     '2e'  -> 2.0
     """
+
     ret = []
     for value in floats:
         striped = value.rstrip("e")

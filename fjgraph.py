@@ -21,6 +21,7 @@ from collections import Counter
 
 def degree_dist(G):
     "グラフGの次数分布を求める"
+
     return Counter(networkx.degree(G).values())
 
 
@@ -45,6 +46,7 @@ class MinCutSolver(object):
 
     def global_mincut(self, G):
         "全域最小カット重みを求める"
+
         if isinstance(G, networkx.MultiGraph):
             G = self._simplify_multigraph(G)
         mincut = None
@@ -58,6 +60,7 @@ class MinCutSolver(object):
 
     def st_mincut(self, G, s, t):
         "s-t最小カットを求める"
+
         if isinstance(G, networkx.MultiGraph):
             G = self._simplify_multigraph(G)
         return networkx.min_cut(G, s, t, capacity='weight')
@@ -68,6 +71,7 @@ class VertexCoverDistCalculator(object):
 
     def _ok_check_values(self, check_values):
         "check_valuesが頂点被覆ならばTrue"
+
         for value in check_values:
             if value < 1:
                 return False
@@ -75,6 +79,7 @@ class VertexCoverDistCalculator(object):
 
     def vertex_cover_dist(self, G):
         "GのIP-頂点被覆分布を計算する"
+
         n = G.number_of_nodes()
         constraint_graph = ConstraintGraph(G)
         ret_dist = Counter()
@@ -89,6 +94,7 @@ class VertexCoverDistCalculator(object):
 
     def lp_vertex_cover_dist(self, G):
         "GのLP-頂点被覆分布を計算する"
+
         n = G.number_of_nodes()
         constraint_graph = ConstraintGraph(G)
         ret_table = Counter()
@@ -115,11 +121,13 @@ class VertexCoverSolver(object):
 
     def lp_solve(self, G):
         "Gの最小頂点問題のLP解を出す"
+
         values = self._solve_with_cplex(G, easing=True)
         return VertexCoverSolver.LPSolution(G.nodes(), values)
 
     def ip_solve(self, G):
         "Gの最小頂点問題のIP解を出す"
+
         values = self._solve_with_cplex(G, easing=False)
         return VertexCoverSolver.IPSolution(G.nodes(), values)
 
@@ -206,10 +214,12 @@ class VertexCoverSolver(object):
 
     class LPSolution(Solution):
         "最小頂点被覆問題のLP解"
+
         pass
 
     class IPSolution(Solution):
         "最小頂点被覆問題のIP解"
+
         pass
 
 
@@ -218,6 +228,7 @@ class GraphEnsembleFactory(object):
 
     def create(self, type, params):
         "グラフアンサンブルtypeのインスタンスをパラメータparamsで生成する"
+
         if type == "SpecifiedDegreeDistEnsemble":
             return SpecifiedDegreeDistEnsemble(**params)
         elif type == "MultiGraphEnsemble":
@@ -235,14 +246,17 @@ class GraphEnsemble(object):
 
     def num_of_nodes(self):
         "頂点数を返す"
+
         return None
 
     def num_of_edges(self):
         "辺数を返す"
+
         return None
 
     def generate_graph(self):
         "グラフアンサンブルのインスタンスをひとつランダムに生成する"
+
         return None
 
 
@@ -392,6 +406,7 @@ class ConstraintGraph(object):
 
         variable_valuesは各頂点に割り当てる値を表すリストである．
         """
+
         G = self.original_graph
         if len(variable_values) != G.number_of_nodes():
             raise ValueError(u"variable_valuesのサイズがおかしい")
