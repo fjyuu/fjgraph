@@ -37,16 +37,16 @@ class ProgressBar(object):
         sys.stdout.write('\n\n')
 
 
-def print_counter(counter, format="{} {}"):
-    "カウンターを標準出力に書き出す"
-    for item in sorted(counter.keys()):
-        print(format.format(item, counter[item]))
+def print_dist(dist, format="{} {}"):
+    "分布を表すdictを標準出力に書き出す"
+    for item in sorted(dist.keys()):
+        print(format.format(item, dist[item]))
 
 
-def output_counter(counter, file, format="{} {}"):
-    "カウンターをファイルに書き出す"
-    for item in sorted(counter.keys()):
-        file.write(format.format(item, counter[item]))
+def output_dist(dist, file, format="{} {}"):
+    "分布を表すdictをファイルに書き出す"
+    for item in sorted(dist.keys()):
+        file.write(format.format(item, dist[item]))
         file.write("\n")
 
 

@@ -73,29 +73,29 @@ def prob_dist_min_vertex_cover_experiment():
 
     if opts.probdist:
         print(u"最小頂点被覆サイズの確率分布:")
-        fjutil.print_counter(ip_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(ip_prob_dist, format="{:>5}: {}")
     else:
         print(u"最小頂点被覆サイズがdelta以上の確率分布:")
-        fjutil.print_counter(ip_c_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(ip_c_prob_dist, format="{:>5}: {}")
     print()
 
     if opts.probdist:
         print(u"半整数を許したときの最小頂点被覆サイズの確率分布:")
-        fjutil.print_counter(lp_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(lp_prob_dist, format="{:>5}: {}")
     else:
         print(u"半整数を許したときの最小頂点被覆サイズがdelta以上の確率分布:")
-        fjutil.print_counter(lp_c_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(lp_c_prob_dist, format="{:>5}: {}")
 
     # ファイル出力
     if opts.output:
         ip_file = open(opts.output + "-ip.dat", "w")
         lp_file = open(opts.output + "-lp.dat", "w")
         if opts.probdist:
-            fjutil.output_counter(ip_prob_dist, ip_file)
-            fjutil.output_counter(lp_prob_dist, lp_file)
+            fjutil.output_dist(ip_prob_dist, ip_file)
+            fjutil.output_dist(lp_prob_dist, lp_file)
         else:
-            fjutil.output_counter(ip_c_prob_dist, ip_file)
-            fjutil.output_counter(lp_c_prob_dist, lp_file)
+            fjutil.output_dist(ip_c_prob_dist, ip_file)
+            fjutil.output_dist(lp_c_prob_dist, lp_file)
 
 
 if __name__ == '__main__':

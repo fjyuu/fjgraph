@@ -73,25 +73,25 @@ def prob_dist_min_cut_experiment():
 
     if opts.probdist:
         print(u"全域最小カット重みの確率分布:")
-        fjutil.print_counter(global_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(global_prob_dist, format="{:>5}: {}")
         print(u"s-t最小カット重みの確率分布:")
-        fjutil.print_counter(st_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(st_prob_dist, format="{:>5}: {}")
     else:
         print(u"全域最小カット重みがdelta以上の確率分布:")
-        fjutil.print_counter(c_global_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(c_global_prob_dist, format="{:>5}: {}")
         print(u"s-t最小カット重みがdelta以上の確率分布:")
-        fjutil.print_counter(c_st_prob_dist, format="{:>5}: {}")
+        fjutil.print_dist(c_st_prob_dist, format="{:>5}: {}")
 
     # ファイル出力
     if opts.output:
         global_file = open(opts.output + "-global.dat", "w")
         st_file = open(opts.output + "-st.dat", "w")
         if opts.probdist:
-            fjutil.output_counter(global_prob_dist, global_file)
-            fjutil.output_counter(st_prob_dist, st_file)
+            fjutil.output_dist(global_prob_dist, global_file)
+            fjutil.output_dist(st_prob_dist, st_file)
         else:
-            fjutil.output_counter(c_global_prob_dist, global_file)
-            fjutil.output_counter(c_st_prob_dist, st_file)
+            fjutil.output_dist(c_global_prob_dist, global_file)
+            fjutil.output_dist(c_st_prob_dist, st_file)
 
 
 if __name__ == "__main__":

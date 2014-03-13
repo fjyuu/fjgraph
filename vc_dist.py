@@ -74,11 +74,11 @@ def ave_vertex_cover_dist_experiment():
     # 結果出力
     print("= main result =")
     print("ave_ip_vertex_cover_dist:")
-    fjutil.print_counter(ave_ip_dist, format="{:>5}: {}")
+    fjutil.print_dist(ave_ip_dist, format="{:>5}: {}")
     print("ave_lp_vertex_cover_dist:")
-    fjutil.print_counter(ave_lp_table, format="{:>10}: {}")
+    fjutil.print_dist(ave_lp_table, format="{:>10}: {}")
     print("ave_lp_vertex_cover_dist(flatten):")
-    fjutil.print_counter(ave_lp_dist, format="{:>7.1f}: {}")
+    fjutil.print_dist(ave_lp_dist, format="{:>7.1f}: {}")
 
     # ファイル出力
     if opts.output:
@@ -86,11 +86,11 @@ def ave_vertex_cover_dist_experiment():
         ip_file = open(opts.output + "-ip.dat", "w")
         fillup_ip_dist = fjutil.fillup_dist(ave_ip_dist,
                                             start=0, stop=n, step=1)
-        fjutil.output_counter(fillup_ip_dist, ip_file)
+        fjutil.output_dist(fillup_ip_dist, ip_file)
         lp_file = open(opts.output + "-lp.dat", "w")
         fillup_lp_dist = fjutil.fillup_dist(ave_lp_dist,
                                             start=0, stop=n, step=0.5)
-        fjutil.output_counter(fillup_lp_dist, lp_file)
+        fjutil.output_dist(fillup_lp_dist, lp_file)
 
 
 if __name__ == '__main__':
