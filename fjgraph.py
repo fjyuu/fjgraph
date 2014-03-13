@@ -53,7 +53,7 @@ class MinCutSolver(object):
         nodes = G.nodes()
         s = nodes.pop()
         for t in nodes:
-            tmp = networkx.min_cut(G, s, t, capacity='weight')
+            tmp = networkx.min_cut(G, s, t, capacity="weight")
             if mincut == None or tmp < mincut:
                 mincut = tmp
         return mincut
@@ -63,7 +63,7 @@ class MinCutSolver(object):
 
         if isinstance(G, networkx.MultiGraph):
             G = self._simplify_multigraph(G)
-        return networkx.min_cut(G, s, t, capacity='weight')
+        return networkx.min_cut(G, s, t, capacity="weight")
 
 
 class VertexCoverDistCalculator(object):
@@ -194,14 +194,17 @@ class VertexCoverSolver(object):
 
         def nodes(self):
             "頂点（変数）リスト"
+
             return tuple(self._nodes)
 
         def values(self):
             "頂点（変数）へ割り当てられた値"
+
             return tuple(self._values)
 
         def opt_value(self):
             "最小頂点被覆のサイズ（最適値）"
+
             return sum(self._values)
 
         def values_dict(self):
@@ -278,7 +281,7 @@ class NMGraphEnsemble(GraphEnsemble):
         m = self._num_of_edges
         G = networkx.gnm_random_graph(n, m)
         for u, v in G.edges():
-            G[u][v]['weight'] = 1
+            G[u][v]["weight"] = 1
         return G
 
     def __str__(self):
@@ -305,7 +308,7 @@ class ErdosRenyiGraphEnsemble(GraphEnsemble):
         p = self._edge_prob
         G = networkx.erdos_renyi_graph(n, p)
         for u, v in G.edges():
-            G[u][v]['weight'] = 1
+            G[u][v]["weight"] = 1
         return G
 
     def __str__(self):

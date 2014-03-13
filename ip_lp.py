@@ -63,5 +63,5 @@ def lp_ip_ensemble_experiment():
     print("ave_difference_opt: {:.4}".format(r["ave_difference_opt"]))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     lp_ip_ensemble_experiment()

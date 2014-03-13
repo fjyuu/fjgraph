@@ -98,5 +98,5 @@ def prob_dist_min_vertex_cover_experiment():
             fjutil.output_dist(lp_c_prob_dist, lp_file)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     prob_dist_min_vertex_cover_experiment()

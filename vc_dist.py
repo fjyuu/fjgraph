@@ -93,5 +93,5 @@ def ave_vertex_cover_dist_experiment():
         fjutil.output_dist(fillup_lp_dist, lp_file)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     ave_vertex_cover_dist_experiment()
