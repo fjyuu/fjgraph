@@ -266,6 +266,11 @@ class NMGraphEnsemble(GraphEnsemble):
             G[u][v]['weight'] = 1
         return G
 
+    def __str__(self):
+        return "{}(num_of_nodes={}, num_of_edges={})".format(
+            self.__class__.__name__, self._num_of_nodes, self._num_of_edges
+        )
+
 
 class ErdosRenyiGraphEnsemble(GraphEnsemble):
     "頂点数nと辺の生成確率pを指定するランダムグラフアンサンブル"
@@ -287,6 +292,11 @@ class ErdosRenyiGraphEnsemble(GraphEnsemble):
         for u, v in G.edges():
             G[u][v]['weight'] = 1
         return G
+
+    def __str__(self):
+        return "{}(num_of_nodes={}, edge_prob={})".format(
+            self.__class__.__name__, self._num_of_nodes, self._edge_prob
+        )
 
 
 class MultiGraphEnsemble(GraphEnsemble):
