@@ -110,7 +110,10 @@ class VertexCoverDistCalculator(object):
 
 
 class VertexCoverSolver(object):
-    "最小頂点被覆問題を計算機"
+    """最小頂点被覆問題を解くためのクラス
+
+    計算にCPLEXを使うので，cplexモジュールが必要．
+    """
 
     def __init__(self, results_stream=None, log_stream=None,
                  error_stream=None, warning_stream=None):
