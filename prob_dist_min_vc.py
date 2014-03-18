@@ -29,8 +29,8 @@ def parse_arguments():
                       default=None,
                       help="set the seed for the random module",
                       metavar="STRING")
-    parser.add_option("--probdist",
-                      dest="probdist",
+    parser.add_option("--non-cumulative",
+                      dest="non_cumulative",
                       action="store_true",
                       default=False,
                       help="report probability distribution (not acumulated)")
@@ -71,7 +71,7 @@ def prob_dist_min_vertex_cover_experiment():
 
     print("= main result =")
 
-    if opts.probdist:
+    if opts.non_cumulative:
         print(u"最小頂点被覆サイズの確率分布:")
         fjutil.print_dist(ip_prob_dist, format="{:>5}: {}")
     else:
@@ -79,7 +79,7 @@ def prob_dist_min_vertex_cover_experiment():
         fjutil.print_dist(ip_c_prob_dist, format="{:>5}: {}")
     print()
 
-    if opts.probdist:
+    if opts.non_cumulative:
         print(u"半整数を許したときの最小頂点被覆サイズの確率分布:")
         fjutil.print_dist(lp_prob_dist, format="{:>5}: {}")
     else:
@@ -90,7 +90,7 @@ def prob_dist_min_vertex_cover_experiment():
     if opts.output:
         ip_file = open(opts.output + "-ip.dat", "w")
         lp_file = open(opts.output + "-lp.dat", "w")
-        if opts.probdist:
+        if opts.non_cumulative:
             fjutil.output_dist(ip_prob_dist, ip_file)
             fjutil.output_dist(lp_prob_dist, lp_file)
         else:

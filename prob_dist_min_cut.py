@@ -29,8 +29,8 @@ def parse_arguments():
                       default=None,
                       help="set the seed for the random module",
                       metavar="STRING")
-    parser.add_option("--probdist",
-                      dest="probdist",
+    parser.add_option("--non-cumulative",
+                      dest="non_cumulative",
                       action="store_true",
                       default=False,
                       help="report probability distribution (not acumulated)")
@@ -71,7 +71,7 @@ def prob_dist_min_cut_experiment():
 
     print("= main result =")
 
-    if opts.probdist:
+    if opts.non_cumulative:
         print(u"全域最小カット重みの確率分布:")
         fjutil.print_dist(global_prob_dist, format="{:>5}: {}")
         print(u"s-t最小カット重みの確率分布:")
@@ -86,7 +86,7 @@ def prob_dist_min_cut_experiment():
     if opts.output:
         global_file = open(opts.output + "-global.dat", "w")
         st_file = open(opts.output + "-st.dat", "w")
-        if opts.probdist:
+        if opts.non_cumulative:
             fjutil.output_dist(global_prob_dist, global_file)
             fjutil.output_dist(st_prob_dist, st_file)
         else:
