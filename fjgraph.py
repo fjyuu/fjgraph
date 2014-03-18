@@ -353,13 +353,15 @@ class MultiGraphEnsemble(GraphEnsemble):
 
 
 class SpecifiedDegreeDistEnsemble(GraphEnsemble):
-    """次数分布を指定したランダムグラフアンサンブル
-
-    ここで，次数分布とは，整数のリストdegree_distである．
-    degree_dist[i]は，次数iの頂点の個数を表す．
-    """
+    "次数分布を指定したランダムグラフアンサンブル"
 
     def __init__(self, degree_dist):
+        """次数分布を指定したランダムグラフアンサンブルを作成する
+
+        次数分布は，整数のリストdegree_distで表す．degree_dist[i]は，次数iの頂点
+        の個数を表す．
+        """
+
         hands_count = sum([i * dist for i, dist in enumerate(degree_dist)])
         if hands_count % 2 != 0:
             raise DegreeDistError(u"次数の合計が2で割り切れない")
