@@ -104,7 +104,7 @@ def count_one_half(values):
 
 
 def ip_lp_ensemble(ensemble, num_of_trials):
-    "アンサンブルにおけるIP解とLP解を比較する"
+    "アンサンブルにおける最小頂点被覆問題のIP解とLP解を比較する"
 
     sum_num_of_one_half = 0
     sum_lp_opt_value = 0.0
@@ -178,10 +178,7 @@ def prob_dist_min_vertex_cover(ensemble, num_of_trials):
     print("""output:
  * prob_dist_min_vertex_cover""")
 
-    min_vertex_dist = _prob_min_vertex_cover(ensemble, num_of_trials, "IP")
-    return dict(
-        (key, value / num_of_trials) for key, value in min_vertex_dist.items()
-    )
+    return _prob_dist_min_vertex_cover(ensemble, num_of_trials, "IP")
 
 
 def prob_dist_lp_min_vertex_cover(ensemble, num_of_trials):
@@ -194,16 +191,13 @@ def prob_dist_lp_min_vertex_cover(ensemble, num_of_trials):
     print("""output:
  * prob_dist_lp_min_vertex_cover""")
 
-    min_vertex_dist = _prob_min_vertex_cover(ensemble, num_of_trials, "LP")
-    return dict(
-        (key, value / num_of_trials) for key, value in min_vertex_dist.items()
-    )
+    return _prob_dist_min_vertex_cover(ensemble, num_of_trials, "LP")
 
 
-def _prob_min_vertex_cover(ensemble, num_of_trials, type="IP"):
-    "最小頂点被覆問題を解く"
+def _prob_dist_min_vertex_cover(ensemble, num_of_trials, type="IP"):
+    "最小頂点被覆問題のIP-最適値もしくはLP-最適値の確率分布を実験的に求める"
 
-    min_vertex_dist = Counter()
+    sum_dist = Counter()
     solver = fjgraph.VertexCoverSolver()
     progress_bar = fjutil.ProgressBar("Calculation", 80)
 
@@ -217,11 +211,13 @@ def _prob_min_vertex_cover(ensemble, num_of_trials, type="IP"):
         else:
             raise ExperimentError(u"typeは'IP'もしくは'LP'でなければいけません")
         opt_value = solution.opt_value()
-        min_vertex_dist[round(opt_value, 1)] += 1 # 小数点第2位以下は誤差
+        sum_dist[round(opt_value, 1)] += 1 # 小数点第2位以下は誤差
         progress_bar.write(i / num_of_trials)
     progress_bar.end()
 
-    return min_vertex_dist
+    return dict(
+        (key, value / num_of_trials) for key, value in sum_dist.items()
+    )
 
 
 def prob_dist_global_min_cut(ensemble, num_of_trials):
