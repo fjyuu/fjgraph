@@ -6,7 +6,7 @@ import networkx
 from collections import Counter
 
 
-class ConstraintGraphTest(unittest.TestCase):
+class IncidenceGraphTest(unittest.TestCase):
 
     def setUp(self):
         self.G = networkx.MultiGraph()
@@ -22,10 +22,10 @@ class ConstraintGraphTest(unittest.TestCase):
         self.G.add_edge(1, 1, capacity=1)
 
     def test_calc_check_values(self):
-        constraint_graph = fjgraph.ConstraintGraph(self.G)
+        incidence_graph = fjgraph.IncidenceGraph(self.G)
         n = self.G.number_of_nodes()
         m = self.G.number_of_edges()
-        cvalues = constraint_graph.calc_check_values([0] * n)
+        cvalues = incidence_graph.calc_check_values([0] * n)
         self.assertEqual(cvalues, [0] * m)
 
 

@@ -81,12 +81,12 @@ class VertexCoverDistCalculator(object):
         "GのIP-頂点被覆分布を計算する"
 
         n = G.number_of_nodes()
-        constraint_graph = ConstraintGraph(G)
+        incidence_graph = IncidenceGraph(G)
         ret_dist = Counter()
 
         for variable_values in itertools.product([0, 1], repeat=n):
             weight = sum(variable_values)
-            check_values = constraint_graph.calc_check_values(variable_values)
+            check_values = incidence_graph.calc_check_values(variable_values)
             if self._ok_check_values(check_values):
                 ret_dist[weight] += 1
 
@@ -96,13 +96,13 @@ class VertexCoverDistCalculator(object):
         "GのLP-頂点被覆分布を計算する"
 
         n = G.number_of_nodes()
-        constraint_graph = ConstraintGraph(G)
+        incidence_graph = IncidenceGraph(G)
         ret_table = Counter()
 
         for variable_values in itertools.product([0, 0.5, 1], repeat=n):
             num_of_one_half = variable_values.count(0.5)
             num_of_one = variable_values.count(1)
-            check_values = constraint_graph.calc_check_values(variable_values)
+            check_values = incidence_graph.calc_check_values(variable_values)
             if self._ok_check_values(check_values):
                 ret_table[(num_of_one_half, num_of_one)] += 1
 
@@ -402,7 +402,7 @@ class SpecifiedDegreeDistEnsemble(GraphEnsemble):
             self.num_of_nodes(), self.num_of_edges())
 
 
-class ConstraintGraph(object):
+class IncidenceGraph(object):
     "オリジナルグラフGの各辺に，頂点（チェックノード）を追加した二部グラフ"
 
     def __init__(self, G, check_function=lambda u, v: u + v):
@@ -453,11 +453,11 @@ class CutSetDistCalculator(object):
         """
 
         n = G.number_of_nodes()
-        constraint_graph = ConstraintGraph(G, self._check_cut_set)
+        incidence_graph = IncidenceGraph(G, self._check_cut_set)
         ret_dist = Counter()
 
         for variable_values in itertools.product([0, 1], repeat=n):
-            check_values = constraint_graph.calc_check_values(variable_values)
+            check_values = incidence_graph.calc_check_values(variable_values)
             u = sum(variable_values)
             w = sum(check_values)
             ret_dist[(u, w)] += 1
@@ -472,13 +472,13 @@ class CutSetDistCalculator(object):
         """
 
         n = G.number_of_nodes()
-        constraint_graph = ConstraintGraph(G, self._check_cut_set)
+        incidence_graph = IncidenceGraph(G, self._check_cut_set)
         ret_dist = Counter()
 
         for variable_values in itertools.product([0, 1], repeat=n):
             if variable_values[s] == variable_values[t]:
                 continue
-            check_values = constraint_graph.calc_check_values(variable_values)
+            check_values = incidence_graph.calc_check_values(variable_values)
             u = sum(variable_values)
             w = sum(check_values)
             ret_dist[(u, w)] += 1
@@ -510,11 +510,11 @@ class ThreeWayCutSetDistCalculator(object):
         """
 
         n = G.number_of_nodes()
-        constraint_graph = ConstraintGraph(G, self._check_cut_set)
+        incidence_graph = IncidenceGraph(G, self._check_cut_set)
         ret_dist = Counter()
 
         for variable_values in itertools.product([0, 1, 2], repeat=n):
-            check_values = constraint_graph.calc_check_values(variable_values)
+            check_values = incidence_graph.calc_check_values(variable_values)
             w = sum(check_values)
             j, k, l = self._partition_size(variable_values)
             ret_dist[(j, k, l, w)] += 1
@@ -526,7 +526,7 @@ class ThreeWayCutSetDistCalculator(object):
 
         n = G.number_of_nodes()
         edges = G.edges()
-        constraint_graph = ConstraintGraph(G, self._check_cut_set)
+        incidence_graph = IncidenceGraph(G, self._check_cut_set)
         cutsets = set()
 
         for variable_values in itertools.product([0, 1, 2], repeat=n):
@@ -536,7 +536,7 @@ class ThreeWayCutSetDistCalculator(object):
                 continue
             if 2 not in variable_values:
                 continue
-            check_values = constraint_graph.calc_check_values(variable_values)
+            check_values = incidence_graph.calc_check_values(variable_values)
             cutset = []
             for i, value in enumerate(check_values):
                 if value == 1:
